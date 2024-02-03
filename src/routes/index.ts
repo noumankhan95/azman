@@ -11,11 +11,23 @@ const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 const AddUsers = lazy(() => import('../pages/AddUsers'));
 const ListUsers = lazy(() => import('../pages/ListUsers'));
+const UserDetails = lazy(() => import('../pages/UserDetails'));
+const Contracts = lazy(() => import('../pages/Contracts'));
 const coreRoutes = [
+  {
+    path: '/contracts',
+    title: 'Contracts',
+    component: Contracts,
+  },
   {
     path: '/calendar',
     title: 'Calender',
     component: Calendar,
+  },
+  {
+    path: '/userDetails',
+    title: 'User Details',
+    component: UserDetails,
   },
   {
     path: '/listUsers',

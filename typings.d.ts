@@ -5,6 +5,12 @@ type WebsiteUsers = {
   name: string;
   phoneNo: string;
   cnic: string;
+  date: string;
+  aldolat: string;
+  almadina: string;
+  almontaqatha: string;
+  approval: string;
+  status: string;
 };
 
 interface UserAuth extends WebsiteUsers {
@@ -12,3 +18,7 @@ interface UserAuth extends WebsiteUsers {
   setisloggedIn: (user: { isloggedIn: boolean } & WebsiteUsers) => void;
 }
 type Roles = 'Staff' | 'Admin' | 'User';
+
+type Approval = 'Pending' | 'Approved' | 'Disapproved';
+
+type Status = 'Blocked' | 'Unblocked';
