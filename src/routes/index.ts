@@ -13,7 +13,14 @@ const AddUsers = lazy(() => import('../pages/AddUsers'));
 const ListUsers = lazy(() => import('../pages/ListUsers'));
 const UserDetails = lazy(() => import('../pages/UserDetails'));
 const Contracts = lazy(() => import('../pages/Contracts'));
+const AddContract = lazy(() => import('../pages/AddContract'));
+
 const coreRoutes = [
+  {
+    path: '/addContract',
+    title: 'Add Contracts',
+    component: AddContract,
+  },
   {
     path: '/contracts',
     title: 'Contracts',

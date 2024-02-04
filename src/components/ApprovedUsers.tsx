@@ -54,7 +54,7 @@ function ApprovedUsers() {
   }, [reload]);
   console.log(users, 'isers');
   return (
-    <div className=" ">
+    <div className="w-full overflow-x-auto">
       <h1 className="text-2xl my-10">Approved Users</h1>
       {showAlert && (
         <div className="w-1/5 md:w-4/5 right-0 absolute flex bg-boxdark-2  border-l-6 border-[#F87171] z-50   px-7 py-8 shadow-md  md:p-9">
@@ -144,91 +144,91 @@ function ApprovedUsers() {
         )}
       </div> */}
 
-      <div className="flex flex-col my-4 overflow-x-auto">
-        <div className="grid rounded-sm w-full bg-gray-2 dark:bg-form-strokedark grid-cols-6 gap-4 md:gap-8">
-          <div className="p-3">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              Name
-            </h5>
-          </div>
-          <div className="p-3 text-start">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              Email
-            </h5>
-          </div>
-          <div className="p-3 text-start">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              Phone
-            </h5>
-          </div>
-          <div className="p-3 text-start">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              CNIC
-            </h5>
-          </div>
-          {/* <div className="p-3 text-start">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              Block / Unblock
-            </h5>
-          </div> */}
-          <div className="p-3 text-start">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              Actions
-            </h5>
-          </div>
-        </div>
-        {loading && (
-          <LoaderIcon className="h-20 my-10 w-20 mx-auto" secondary="blue" />
-        )}
-        {!loading &&
-          currentItems &&
-          currentItems.map((u) => (
-            <div
-              className="grid w-full rounded-sm bg-gray-2 dark:bg-meta-4 grid-cols-6 gap-4 md:gap-8 items-start"
-              key={u.uid}
-            >
-              <div className="p-3 text-start">
+      <div className="flex flex-col my-4 overflow-x-auto min-w-max">
+        <table className="w-full ">
+          <thead>
+            <tr className="grid rounded-sm w-full bg-gray-2 dark:bg-form-strokedark grid-cols-6 gap-4 md:gap-8">
+              <th className="p-3 md:w-1/5 lg:w-1/4">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  {u.name}
+                  Name
                 </h5>
-              </div>
-              <div className="p-3 text-start">
-                <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
-                  {u.email}
-                </h5>
-              </div>
-              <div className="p-3 text-start">
-                <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
-                  {u.phoneNo}
-                </h5>
-              </div>
-              <div className="p-3 text-start">
+              </th>
+              <th className="p-3 md:w-1/5 lg:w-1/4">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  {u.cnic}
+                  Email
                 </h5>
-              </div>
-              {/* <div className="p-3 text-start">
+              </th>
+              <th className="p-3 md:w-1/6 lg:w-1/8">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  {u.}
+                  Phone
                 </h5>
-              </div> */}
-              <div className="p-3 text-start">
-                <h5
-                  className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6"
-                  onClick={() =>
-                    navigate('/userDetails', {
-                      state: { user: u },
-                    })
-                  }
+              </th>
+              <th className="p-3 md:w-1/6 lg:w-1/8">
+                <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
+                  CNIC
+                </h5>
+              </th>
+              <th className="p-3 md:w-1/5 lg:w-1/4">
+                <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
+                  Actions
+                </h5>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading && (
+              <tr>
+                <td className="text-center">
+                  <LoaderIcon
+                    className="h-20 my-10 w-20 mx-auto"
+                    secondary="blue"
+                  />
+                </td>
+              </tr>
+            )}
+            {!loading &&
+              currentItems &&
+              currentItems.map((u) => (
+                <tr
+                  className="grid w-full rounded-sm bg-gray-2 dark:bg-meta-4 grid-cols-6 gap-4 md:gap-8 items-start overflow-auto"
+                  key={u.uid}
                 >
-                  View Details
-                </h5>
-              </div>
-
-              {/* Additional columns as needed */}
-            </div>
-          ))}
+                  <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
+                    <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
+                      {u.name}
+                    </h5>
+                  </td>
+                  <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
+                    <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
+                      {u.email}
+                    </h5>
+                  </td>
+                  <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
+                    <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
+                      {u.phoneNo}
+                    </h5>
+                  </td>
+                  <td className="p-3 w-3/5 md:w-1/6 lg:w-1/8">
+                    <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
+                      {u.cnic}
+                    </h5>
+                  </td>
+                  <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
+                    <h5
+                      className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6"
+                      onClick={() =>
+                        navigate('/userDetails', { state: { user: u } })
+                      }
+                    >
+                      View Details
+                    </h5>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
+
       <div className="my-10 mx-15">
         <div className="flex flex-wrap gap-5 xl:gap-7.5 items-center">
           <button

@@ -8,6 +8,13 @@ const useUserAuth = create<UserAuth>((set) => ({
   cnic: '',
   phoneNo: '',
   name: '',
+  aldolat: '',
+  almadina: '',
+  almontaqatha: '',
+  approval: '',
+  date: '',
+  status: '',
+  role: 'User',
   setisloggedIn({ email, name, phoneNo, role, uid, isloggedIn }) {
     set((state) => ({
       ...state,

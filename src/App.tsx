@@ -6,7 +6,7 @@ import ECommerce from './pages/Dashboard/ECommerce';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import 'react-toastify/dist/ReactToastify.css';
-
+import 'react-quill/dist/quill.snow.css';
 import Loader from './common/Loader';
 import routes from './routes';
 // @ts-ignore
@@ -15,6 +15,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import useUserAuth from './store/useUserAuth';
 import { doc, getDoc } from 'firebase/firestore';
 import Tables from './pages/Tables';
+import ListUsers from './pages/ListUsers';
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
@@ -51,6 +52,13 @@ function App() {
           phoneNo: '',
           isloggedIn: false,
           cnic: '',
+          aldolat: '',
+          almadina: '',
+          almontaqatha: '',
+          approval: '',
+          date: '',
+          status: '',
+          role: 'Admin',
         });
         setLoading(false);
       }
@@ -79,14 +87,14 @@ function App() {
             </>
           ) : (
             <Route element={<DefaultLayout />}>
-              <Route index element={<Tables />} />
+              <Route index element={<ListUsers />} />
               {routes.map((routes, index) => {
                 const { path, component: Component } = routes;
                 return (
                   <Route key={index} path={path} element={<Component />} />
                 );
               })}
-              <Route path="*" element={<Tables />} />
+              <Route path="*" element={<ListUsers />} />
             </Route>
           )}
         </Routes>

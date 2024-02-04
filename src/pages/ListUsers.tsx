@@ -4,12 +4,10 @@ const ApprovedUsers = lazy(() => import('../components/ApprovedUsers'));
 
 type ListModes = 'Pending' | 'Approved';
 function ListUsers() {
-  const [mode, setmode] = useState<ListModes>('Approved');
-  const setListMode = useCallback((m: ListModes) => {
-    setmode(m);
-  }, []);
+  const [mode, setmode] = useState<ListModes>('Pending');
+
   return (
-    <div className=" ">
+    <div className="">
       <div className="space-x-6 text-start">
         <button
           className="inline-flex items-center rounded-md justify-center bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"

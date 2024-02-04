@@ -22,3 +22,22 @@ type Roles = 'Staff' | 'Admin' | 'User';
 type Approval = 'Pending' | 'Approved' | 'Disapproved';
 
 type Status = 'Blocked' | 'Unblocked';
+
+type Contract = {
+  id?: string;
+  name: string;
+  type: string;
+  file: Array<{ url: string | File }>;
+  html: string;
+};
+
+type ContractStore = {
+  contract: Contract;
+  setcontract: (c: Contract) => void;
+  addToDb: (c: Contract) => Promise<void>;
+  updateIndb: (c: Contract) => Promise<void>;
+  resetContract: () => void;
+  isEditing: { value: boolean; id: string };
+  setisEditing: (id: string) => void;
+  setisNotEditing: () => void;
+};

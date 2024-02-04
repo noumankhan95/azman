@@ -75,7 +75,7 @@ function NewUsers() {
     }
   }, []);
   return (
-    <div className=" ">
+    <div className="w-full">
       <h1 className="text-2xl my-10">New Users</h1>
 
       {showAlert && (
@@ -165,161 +165,165 @@ function NewUsers() {
           </button>
         )}
       </div> */}
-
-      <div className="flex flex-col my-4 overflow-x-auto">
-        <div className="grid rounded-sm w-full bg-gray-2 dark:bg-form-strokedark grid-cols-6 gap-4 md:gap-8">
-          <div className="p-3">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              Name
-            </h5>
-          </div>
-          <div className="p-3 text-start">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              Email
-            </h5>
-          </div>
-          <div className="p-3 text-start">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              Phone
-            </h5>
-          </div>
-          <div className="p-3 text-start">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              CNIC
-            </h5>
-          </div>
-          {/* <div className="p-3 text-start">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              Block / Unblock
-            </h5>
-          </div> */}
-
-          <div className="p-3 text-start">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              Actions
-            </h5>
-          </div>
-          <div className="p-3 text-start">
-            <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-              Approval
-            </h5>
-          </div>
-        </div>
-        {loading && (
-          <LoaderIcon className="h-20 my-10 w-20 mx-auto" secondary="blue" />
-        )}
-        {!loading &&
-          currentItems &&
-          currentItems.map((u) => (
-            <div
-              className="grid w-full rounded-sm bg-gray-2 dark:bg-meta-4 grid-cols-6 gap-4 md:gap-8 items-start"
-              key={u.uid}
-            >
-              <div className="p-3 text-start">
+      <div className="flex flex-col my-4 overflow-x-auto min-w-max">
+        <table className="w-full">
+          <thead>
+            <tr className="grid rounded-sm w-full bg-gray-2 dark:bg-form-strokedark grid-cols-6 gap-4 md:gap-8">
+              <th className="p-3">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  {u.name}
+                  Name
                 </h5>
-              </div>
-              <div className="p-3 text-start">
-                <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
-                  {u.email}
-                </h5>
-              </div>
-              <div className="p-3 text-start">
-                <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
-                  {u.phoneNo}
-                </h5>
-              </div>
-              <div className="p-3 text-start">
+              </th>
+              <th className="p-3 text-start">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  {u.cnic}
+                  Email
                 </h5>
-              </div>
-              {/* <div className="p-3 text-start">
+              </th>
+              <th className="p-3 text-start">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  {u.}
+                  Phone
                 </h5>
-              </div> */}
-              <div className="p-3 text-start">
-                <h5
-                  className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6"
-                  onClick={() =>
-                    navigate('/userDetails', {
-                      state: { user: u },
-                    })
-                  }
+              </th>
+              <th className="p-3 text-start">
+                <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
+                  CNIC
+                </h5>
+              </th>
+              <th className="p-3 text-start">
+                <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
+                  Actions
+                </h5>
+              </th>
+              <th className="p-3 text-start">
+                <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
+                  Approval
+                </h5>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading && (
+              <tr>
+                <td className="text-center">
+                  <LoaderIcon
+                    className="h-20 my-10 w-20 mx-auto"
+                    secondary="blue"
+                  />
+                </td>
+              </tr>
+            )}
+            {!loading &&
+              currentItems &&
+              currentItems.map((u) => (
+                <tr
+                  className="grid w-full rounded-sm bg-gray-2 dark:bg-meta-4 grid-cols-6  items-start"
+                  key={u.uid}
                 >
-                  View Details
-                </h5>
-              </div>
-              <div className="p-3 text-start flex">
-                {approval.id === u.uid && approval.status ? (
-                  <LoaderIcon className="h-10 w-10  " />
-                ) : (
-                  <>
-                    <h5 className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6">
-                      <svg
-                        height={45}
-                        width={45}
-                        viewBox="0 -0.5 25 25"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        onClick={changeApproval.bind(null, 'Approved', u.uid)}
-                      >
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g
-                          id="SVGRepo_tracerCarrier"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                          <path
-                            d="M5.5 12.5L10.167 17L19.5 8"
-                            stroke="#00ff04"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          ></path>
-                        </g>
-                      </svg>
+                  <td className="p-3 text-start">
+                    <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
+                      {u.name}
                     </h5>
-                    <h5 className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6">
-                      <svg
-                        height={45}
-                        width={45}
-                        viewBox="0 0 1024 1024"
-                        className="icon"
-                        version="1.1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="#000000"
-                        onClick={changeApproval.bind(
-                          null,
-                          'Disapproved',
-                          u.uid,
-                        )}
-                      >
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g
-                          id="SVGRepo_tracerCarrier"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                          <path
-                            d="M512 128C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128z m0 85.333333c66.133333 0 128 23.466667 179.2 59.733334L273.066667 691.2C236.8 640 213.333333 578.133333 213.333333 512c0-164.266667 134.4-298.666667 298.666667-298.666667z m0 597.333334c-66.133333 0-128-23.466667-179.2-59.733334l418.133333-418.133333C787.2 384 810.666667 445.866667 810.666667 512c0 164.266667-134.4 298.666667-298.666667 298.666667z"
-                            fill="#D50000"
-                          ></path>
-                        </g>
-                      </svg>
+                  </td>
+                  <td className="p-3 text-start">
+                    <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
+                      {u.email}
                     </h5>
-                  </>
-                )}{' '}
-              </div>
-
-              {/* Additional columns as needed */}
-            </div>
-          ))}
+                  </td>
+                  <td className="p-3 text-start">
+                    <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
+                      {u.phoneNo}
+                    </h5>
+                  </td>
+                  <td className="p-3 text-start">
+                    <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
+                      {u.cnic}
+                    </h5>
+                  </td>
+                  <td className="p-3 text-start">
+                    <h5
+                      className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6"
+                      onClick={() =>
+                        navigate('/userDetails', {
+                          state: { user: u },
+                        })
+                      }
+                    >
+                      View Details
+                    </h5>
+                  </td>
+                  <td className="p-3 text-start flex">
+                    {approval.id === u.uid && approval.status ? (
+                      <LoaderIcon className="h-10 w-10" />
+                    ) : (
+                      <>
+                        <h5 className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6">
+                          <svg
+                            height={45}
+                            width={45}
+                            viewBox="0 -0.5 25 25"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            onClick={changeApproval.bind(
+                              null,
+                              'Approved',
+                              u.uid,
+                            )}
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <path
+                                d="M5.5 12.5L10.167 17L19.5 8"
+                                stroke="#00ff04"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              ></path>
+                            </g>
+                          </svg>
+                        </h5>
+                        <h5 className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6">
+                          <svg
+                            height={45}
+                            width={45}
+                            viewBox="0 0 1024 1024"
+                            className="icon"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="#000000"
+                            onClick={changeApproval.bind(
+                              null,
+                              'Disapproved',
+                              u.uid,
+                            )}
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <path
+                                d="M512 128C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128z m0 85.333333c66.133333 0 128 23.466667 179.2 59.733334L273.066667 691.2C236.8 640 213.333333 578.133333 213.333333 512c0-164.266667 134.4-298.666667 298.666667-298.666667z m0 597.333334c-66.133333 0-128-23.466667-179.2-59.733334l418.133333-418.133333C787.2 384 810.666667 445.866667 810.666667 512c0 164.266667-134.4 298.666667-298.666667 298.666667z"
+                                fill="#D50000"
+                              ></path>
+                            </g>
+                          </svg>
+                        </h5>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
+
       <div className="my-10 mx-15">
         <div className="flex flex-wrap gap-5 xl:gap-7.5 items-center">
           <button

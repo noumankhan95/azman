@@ -61,7 +61,7 @@ const Header = (props: {
           </Link>
         </div>
 
-        <div className="hidden sm:block">
+        {/* <div className="hidden sm:block">
           <form action="https://formbold.com/s/unique_form_id" method="POST">
             <div className="relative">
               <button className="absolute top-1/2 left-0 -translate-y-1/2">
@@ -95,10 +95,10 @@ const Header = (props: {
               />
             </div>
           </form>
-        </div>
+        </div> */}
 
         <div className="flex items-center gap-3 2xsm:gap-7">
-          <ul className="flex items-center gap-2 2xsm:gap-4">
+          <ul className="flex items-end gap-2 2xsm:gap-4">
             {/* <!-- Dark Mode Toggler --> */}
             <DarkModeSwitcher />
             {/* <!-- Dark Mode Toggler --> */}
