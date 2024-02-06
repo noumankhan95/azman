@@ -83,7 +83,7 @@ function App() {
             <>
               <Route path="/auth/signin" element={<SignIn />} />
               {/* <Route path="/auth/signup" element={<SignUp />} /> */}
-              <Route path="*" element={<SignUp />} />
+              <Route path="*" element={<SignIn />} />
             </>
           ) : (
             <Route element={<DefaultLayout />}>
