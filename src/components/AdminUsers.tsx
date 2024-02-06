@@ -9,25 +9,19 @@ import {
   query,
   where,
   runTransaction,
-  updateDoc,
 } from 'firebase/firestore';
 import { type Timestamp } from 'firebase/firestore';
 // @ts-ignore
 import { db } from '../firebase.js';
-
-function NewUsers() {
+type AdminUser = { id: string; email: string };
+function AdminUsers() {
   const [showAlert, setshowAlert] = useState(false);
   const navigate = useNavigate();
   const [loading, setisloading] = useState<boolean>(false);
   const [reload, setreload] = useState<boolean>(false);
-  const [todelete, settodelete] = useState<{ id: string; email: string }>();
+  const [todelete, settodelete] = useState<AdminUser>();
   const [isdeleting, setisdeleting] = useState<boolean>(false);
-  const [users, setusers] = useState<WebsiteUsers[]>([]);
-
-  const [approval, setapproval] = useState<{ status: boolean; id: string }>({
-    id: '',
-    status: false,
-  });
+  const [users, setusers] = useState<{ email: string; id: string }[]>([]);
   const [page, setpage] = useState<number>(1);
   const ItemsperPage = 10;
   const totalPages = Math.ceil((users.length || 1) / ItemsperPage);
@@ -37,22 +31,18 @@ function NewUsers() {
   const getUsers = useCallback(async () => {
     try {
       setisloading((p) => true);
-      const qs = await getDocs(collection(db, 'users'));
-      const usersData: WebsiteUsers[] = [];
+      const qs = await getDocs(collection(db, 'admin_user'));
+      const usersData: AdminUser[] = [];
       qs.forEach((doc) => {
-        if (
-          doc.data()?.approval == 'Pending' ||
-          doc.data()?.approval == undefined
-        ) {
-          const newUserData = {
-            ...(doc.data() as WebsiteUsers),
-          };
-          usersData.push(newUserData);
-        }
+        const newUserData: AdminUser = {
+          ...(doc.data() as AdminUser),
+          id: doc.id,
+        };
+        usersData.push(newUserData);
       });
       setusers(usersData);
     } catch (e) {
-      toast.error('Couldnt Fetch Users,Try Again Later');
+      console.log(e);
     } finally {
       setisloading((p) => false);
       setreload(false);
@@ -63,24 +53,9 @@ function NewUsers() {
     getUsers();
   }, [reload]);
   console.log(users, 'isers');
-  const changeApproval = useCallback(async (mode: string, uid: string) => {
-    try {
-      setapproval((p) => ({ id: uid, status: true }));
-      await updateDoc(doc(db, 'users', uid), {
-        approval: mode,
-      });
-      toast.success('Changed Approval');
-      setreload(true);
-    } catch (e) {
-      toast.error('Couldnt Change Approval, Try Again');
-    } finally {
-      setapproval((p) => ({ id: '', status: false }));
-    }
-  }, []);
   return (
-    <div className="w-full overflow-x-auto">
-      <h1 className="text-2xl my-10">New Users</h1>
-
+    <div className="w-full ">
+      <h1 className="text-2xl my-10">Approved Users</h1>
       {showAlert && (
         <div className="w-1/5 md:w-4/5 right-0 absolute flex bg-boxdark-2  border-l-6 border-[#F87171] z-50   px-7 py-8 shadow-md  md:p-9">
           <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg ">
@@ -111,34 +86,15 @@ function NewUsers() {
                   try {
                     setisdeleting(true);
                     console.log(todelete);
-                    let myquery = query(
-                      collection(db, 'staff'),
-                      where('email', '==', todelete?.email),
-                    );
-                    const userDoc = doc(db, 'users', todelete?.id!);
-                    runTransaction(db, async (transaction) => {
-                      // await deleteDoc(userDoc);
-                      transaction.delete(userDoc);
-                      // Execute the query
-                      const querySnapshot = await getDocs(myquery);
-                      if (!querySnapshot.empty) {
-                        querySnapshot.forEach(async (d) => {
-                          const staffDoc = doc(db, 'staff', d.id);
-                          transaction.delete(staffDoc);
-                        });
-                      } else {
-                        console.log('empty snapshot', querySnapshot.empty);
-                      }
-                      settodelete({ email: '', id: '' });
-                      setshowAlert(false);
-                      setreload(true);
-                      toast.success('Deleted');
-                    });
+                    await deleteDoc(doc(db, 'admin_user', todelete?.id!));
+                    toast.success('Deleted');
                   } catch (e) {
                     console.log(e);
                     toast.error('Failed To Delete');
                   } finally {
+                    setreload(true);
                     setisdeleting(false);
+                    setshowAlert(false);
                   }
                 }}
               >
@@ -168,38 +124,25 @@ function NewUsers() {
           </button>
         )}
       </div> */}
+
       <div className="flex flex-col my-4 overflow-x-auto min-w-max">
-        <table className="w-full">
+        <table className="w-full ">
           <thead>
-            <tr className="grid rounded-sm w-full bg-gray-2 dark:bg-form-strokedark grid-cols-6 gap-4 md:gap-8">
-              <th className="p-3">
+            <tr className="grid rounded-sm w-full bg-gray-2 dark:bg-form-strokedark grid-cols-2 gap-4 md:gap-8">
+              {/* <th className="p-3 md:w-1/5 lg:w-1/4">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                   Name
                 </h5>
-              </th>
-              <th className="p-3 text-start">
+              </th> */}
+              <th className="p-3 md:w-1/5 lg:w-1/4">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                   Email
                 </h5>
               </th>
-              <th className="p-3 text-start">
-                <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Phone
-                </h5>
-              </th>
-              <th className="p-3 text-start">
-                <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  CNIC
-                </h5>
-              </th>
-              <th className="p-3 text-start">
+
+              <th className="p-3 md:w-1/5 lg:w-1/4">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                   Actions
-                </h5>
-              </th>
-              <th className="p-3 text-start">
-                <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Approval
                 </h5>
               </th>
             </tr>
@@ -219,107 +162,29 @@ function NewUsers() {
               currentItems &&
               currentItems.map((u) => (
                 <tr
-                  className="grid w-full rounded-sm bg-gray-2 dark:bg-meta-4 grid-cols-6  items-start"
-                  key={u.uid}
+                  className="grid w-full rounded-sm bg-gray-2 dark:bg-meta-4 grid-cols-2 gap-4 md:gap-8 items-start overflow-auto"
+                  key={u.id}
                 >
-                  <td className="p-3 text-start">
+                  {/* <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
                     <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                       {u.name}
                     </h5>
-                  </td>
-                  <td className="p-3 text-start">
+                  </td> */}
+                  <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
                     <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
                       {u.email}
                     </h5>
                   </td>
-                  <td className="p-3 text-start">
-                    <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
-                      {u.phoneNo}
-                    </h5>
-                  </td>
-                  <td className="p-3 text-start">
-                    <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                      {u.cnic}
-                    </h5>
-                  </td>
-                  <td className="p-3 text-start">
+                  <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
                     <h5
-                      className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6"
-                      onClick={() =>
-                        navigate('/userDetails', {
-                          state: { user: u },
-                        })
-                      }
+                      className="text-sm font-medium cursor-pointer xsm:text-base text-danger text-center whitespace-normal hover:text-meta-6"
+                      onClick={() => {
+                        settodelete({ email: u.email, id: u.id });
+                        setshowAlert(true);
+                      }}
                     >
-                      View Details
+                      Delete
                     </h5>
-                  </td>
-                  <td className="p-3 text-start flex">
-                    {approval.id === u.uid && approval.status ? (
-                      <LoaderIcon className="h-10 w-10" />
-                    ) : (
-                      <>
-                        <h5 className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6">
-                          <svg
-                            height={45}
-                            width={45}
-                            viewBox="0 -0.5 25 25"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            onClick={changeApproval.bind(
-                              null,
-                              'Approved',
-                              u.uid,
-                            )}
-                          >
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g
-                              id="SVGRepo_tracerCarrier"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            ></g>
-                            <g id="SVGRepo_iconCarrier">
-                              <path
-                                d="M5.5 12.5L10.167 17L19.5 8"
-                                stroke="#00ff04"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              ></path>
-                            </g>
-                          </svg>
-                        </h5>
-                        <h5 className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6">
-                          <svg
-                            height={45}
-                            width={45}
-                            viewBox="0 0 1024 1024"
-                            className="icon"
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="#000000"
-                            onClick={changeApproval.bind(
-                              null,
-                              'Disapproved',
-                              u.uid,
-                            )}
-                          >
-                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                            <g
-                              id="SVGRepo_tracerCarrier"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            ></g>
-                            <g id="SVGRepo_iconCarrier">
-                              <path
-                                d="M512 128C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128z m0 85.333333c66.133333 0 128 23.466667 179.2 59.733334L273.066667 691.2C236.8 640 213.333333 578.133333 213.333333 512c0-164.266667 134.4-298.666667 298.666667-298.666667z m0 597.333334c-66.133333 0-128-23.466667-179.2-59.733334l418.133333-418.133333C787.2 384 810.666667 445.866667 810.666667 512c0 164.266667-134.4 298.666667-298.666667 298.666667z"
-                                fill="#D50000"
-                              ></path>
-                            </g>
-                          </svg>
-                        </h5>
-                      </>
-                    )}
                   </td>
                 </tr>
               ))}
@@ -330,7 +195,9 @@ function NewUsers() {
       <div className="my-10 mx-15">
         <div className="flex flex-wrap gap-5 xl:gap-7.5 items-center">
           <button
-            className="inline-flex items-center justify-center   disabled:bg-body gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+            className="inline-flex items-center
+            disabled:bg-body
+            justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
             disabled={page === 1}
             onClick={() => {
               if (page == 1) return;
@@ -363,7 +230,7 @@ function NewUsers() {
           </button>
           <h2>Page {page}</h2>
           <button
-            className="inline-flex items-center justify-center   disabled:bg-body gap-2.5 disabled:cursor-default rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+            className="inline-flex items-center justify-center gap-2.5 disabled:cursor-default rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 disabled:bg-body"
             disabled={page == totalPages}
             onClick={() => {
               if (page < totalPages) {
@@ -401,4 +268,4 @@ function NewUsers() {
   );
 }
 
-export default NewUsers;
+export default AdminUsers;

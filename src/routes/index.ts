@@ -14,8 +14,14 @@ const ListUsers = lazy(() => import('../pages/ListUsers'));
 const UserDetails = lazy(() => import('../pages/UserDetails'));
 const Contracts = lazy(() => import('../pages/Contracts'));
 const AddContract = lazy(() => import('../pages/AddContract'));
+const ListadminUsers = lazy(() => import('../pages/ListAdminUsers'));
 
 const coreRoutes = [
+  {
+    path: '/listadminUsers',
+    title: 'List Admin Users',
+    component: ListadminUsers,
+  },
   {
     path: '/addContract',
     title: 'Add Contracts',
