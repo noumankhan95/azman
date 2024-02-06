@@ -9,6 +9,15 @@ import Toaster from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { LoaderIcon } from 'react-hot-toast';
 import { useState } from 'react';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
+import { toast } from 'react-toastify';
 const SignIn = () => {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
@@ -238,6 +247,13 @@ const SignIn = () => {
                     onClick={async () => {
                       try {
                         setisloading((p) => true);
+                        const d = await getDocs(
+                          query(
+                            collection(db, 'admin_user'),
+                            where('email', '==', emailRef.current?.value!),
+                          ),
+                        );
+                        if (d.empty) throw 'e';
                         const u = await signInWithEmailAndPassword(
                           auth,
                           emailRef.current?.value!,
@@ -246,7 +262,9 @@ const SignIn = () => {
 
                         // navigate('/');
                       } catch (e) {
-                        alert(e);
+                        toast.error(
+                          'Couldnt Sign You In, Authentication Error Occured',
+                        );
                       } finally {
                         setisloading((p) => false);
                       }
@@ -300,14 +318,14 @@ const SignIn = () => {
                   Sign in with Google
                 </button> */}
 
-                <div className="mt-6 text-center">
+                {/* <div className="mt-6 text-center">
                   <p>
                     Don’t have any account?{' '}
                     <Link to="/auth/signup" className="text-primary">
                       Sign Up
                     </Link>
                   </p>
-                </div>
+                </div> */}
               </form>
             </div>
           </div>

@@ -28,6 +28,13 @@ type images = {
 const validationSchema = yup.object().shape({
   name: yup.string().required('Name is Required').min(3),
   type: yup.string().required('Type is Required').min(3),
+  details: yup.array().of(
+    yup.object().shape({
+      from: yup.string().required('From is Required'),
+      to: yup.string().required('To is Required'),
+      price: yup.number().min(0).required('Price is Required'),
+    }),
+  ),
 });
 
 function AddContract() {
@@ -41,6 +48,13 @@ function AddContract() {
     initialValues: {
       name: contract.name || '',
       type: contract.type || '',
+      details: contract.details || [
+        {
+          from: '',
+          to: '',
+          price: 0,
+        },
+      ],
     },
     validationSchema,
     async onSubmit(values, formikHelpers) {
@@ -69,6 +83,7 @@ function AddContract() {
             html: content,
             name: values.name,
             type: values.type,
+            details: values.details,
           });
         } else {
           await addToDb({
@@ -76,6 +91,7 @@ function AddContract() {
             html: content,
             name: values.name,
             type: values.type,
+            details: values.details,
           });
         }
         toast.success('Successfully Added');
@@ -220,12 +236,9 @@ function AddContract() {
       <div className="flex flex-row flex-wrap justify-center items-center py-3">
         {images &&
           images?.map(
-            (i) =>
+            (i, ind) =>
               i.url !== '' && (
-                <div
-                  className="w-80 my-3 mx-3 md:my-0 relative "
-                  key={i.url.toString() + Math.random() * 100000}
-                >
+                <div className="w-80 my-3 mx-3 md:my-0 relative " key={ind}>
                   {i.url instanceof File ? (
                     <>
                       <svg
@@ -327,7 +340,102 @@ function AddContract() {
               />
             </div>
           </div>
-          <div className="overflow-hidden rounded-sm border border-strokeshadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="flex flex-col">
+            {formikObj.values.details.map((d, index) => (
+              <div
+                className="w-full flex flex-col lg:flex-row lg:space-x-5 my-3 "
+                key={index}
+              >
+                <div className="w-full md:w-2/5 ">
+                  <label className="mb-3 block text-black dark:text-white">
+                    From
+                  </label>
+                  <Field
+                    type="text"
+                    name={`details.${index}.from`}
+                    placeholder="From"
+                    className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  <ErrorMessage
+                    name={`details.${index}.from`}
+                    component="div"
+                    className="text-danger"
+                  />
+                </div>
+                <div className="w-full md:w-2/5">
+                  <label className="mb-3 block text-black dark:text-white">
+                    To
+                  </label>
+                  <Field
+                    type="text"
+                    name={`details.${index}.to`}
+                    placeholder="To"
+                    className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  <ErrorMessage
+                    name={`details.${index}.to`}
+                    component="div"
+                    className="text-danger"
+                  />
+                </div>
+                <div className="w-full md:w-2/5">
+                  <label className="mb-3 block text-black dark:text-white">
+                    Price
+                  </label>
+                  <Field
+                    type="number"
+                    name={`details.${index}.price`}
+                    className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  <ErrorMessage
+                    name={`details.${index}.price`}
+                    component="div"
+                    className="text-danger"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="w-full relative -mt-4">
+            <svg
+              viewBox="0 0 1024 1024"
+              height={30}
+              width={30}
+              version="1.1"
+              className="icon absolute right-0 cursor-pointer"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#000000"
+              onClick={() => {
+                formikObj.setFieldValue('details', [
+                  ...formikObj.values.details,
+                  { from: '', to: '', price: 0 },
+                ]);
+              }}
+            >
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  d="M512 1024C229.7 1024 0 794.3 0 512S229.7 0 512 0s512 229.7 512 512-229.7 512-512 512z m0-938.7C276.7 85.3 85.3 276.7 85.3 512S276.7 938.7 512 938.7 938.7 747.3 938.7 512 747.3 85.3 512 85.3z"
+                  fill="#00ff2a"
+                ></path>
+                <path
+                  d="M682.7 554.7H341.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h341.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.6 42.7z"
+                  fill="#00ff1e"
+                ></path>
+                <path
+                  d="M512 725.3c-23.6 0-42.7-19.1-42.7-42.7V341.3c0-23.6 19.1-42.7 42.7-42.7s42.7 19.1 42.7 42.7v341.3c0 23.6-19.1 42.7-42.7 42.7z"
+                  fill="#00ff1e"
+                ></path>
+              </g>
+            </svg>
+          </div>
+
+          <div className="overflow-hidden rounded-sm border border-strokeshadow-default dark:border-strokedark my-5 dark:bg-boxdark">
             <div className="px-4 py-5 pb-6 text-center lg:pb-8 xl:pb-11.5">
               <h1>Choose Image</h1>
               <div className="relative z-30 mx-auto  h-30 w-full max-w-30 rounded-full p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">

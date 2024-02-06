@@ -6,7 +6,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from 'firebase/firestore';
-import { ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { create } from 'zustand';
 //@ts-ignore
 import { db, storage } from '../firebase.js';
@@ -16,6 +16,7 @@ const useContract = create<ContractStore>((set, get) => ({
     name: '',
     type: '',
     file: [],
+    details: [{ from: '', price: 0, to: '' }],
   },
   isEditing: { id: '', value: false },
   setisEditing: (id: string) => {
@@ -31,14 +32,19 @@ const useContract = create<ContractStore>((set, get) => ({
       const uploadPromises = c.file?.map(async (f) => {
         console.log(f);
         if (typeof f.url === 'string') {
+          images.push({ url: f.url });
           return;
         } else if (f.url instanceof File) {
           let name = `contracts/${c.name}/${f.url.name}`;
 
           try {
-            await uploadBytes(ref(storage, name), f.url);
-            images.push({ url: name });
-            console.log('File Uploaded');
+            const r = await uploadBytes(ref(storage, name), f.url);
+            const constructedURL = await getDownloadURL(ref(storage, name));
+            images.push({ url: constructedURL });
+            // const constructedURL = `https://storage.googleapis.com/${storage.bucket}/${r.metadata.fullPath}`;
+            console.log('File Uploaded', r.metadata.ref?.toString());
+
+            console.log('File Uploaded', r.ref);
           } catch (e) {
             // alert(e);
             throw e;
@@ -52,7 +58,8 @@ const useContract = create<ContractStore>((set, get) => ({
         type: c.type,
         name: c.name,
         html: c.html,
-        file: arrayUnion(...images),
+        file: images,
+        details: c.details,
         createdAt: serverTimestamp(),
       });
     } catch (e) {
@@ -63,13 +70,19 @@ const useContract = create<ContractStore>((set, get) => ({
   resetContract() {
     set((state) => ({
       ...state,
-      contract: { html: '', name: '', type: '', file: [] },
+      contract: {
+        html: '',
+        name: '',
+        type: '',
+        file: [],
+        details: [{ from: '', price: 0, to: '' }],
+      },
     }));
   },
-  setcontract({ html, name, type, file }) {
+  setcontract({ html, name, type, file, details }) {
     set((state) => ({
       ...state,
-      contract: { html, name, type, file },
+      contract: { html, name, type, file, details },
     }));
   },
   async updateIndb(c) {
@@ -80,13 +93,15 @@ const useContract = create<ContractStore>((set, get) => ({
       const uploadPromises = c.file?.map(async (f) => {
         console.log(f);
         if (typeof f.url === 'string') {
+          images.push({ url: f.url });
           return;
         } else if (f.url instanceof File) {
           let name = `contracts/${c.name}/${f.url.name}`;
 
           try {
             const r = await uploadBytes(ref(storage, name), f.url);
-            images.push({ url: r.metadata.fullPath });
+            const constructedURL = await getDownloadURL(ref(storage, name));
+            images.push({ url: constructedURL });
             console.log('File Uploaded');
           } catch (e) {
             // alert(e);
@@ -101,7 +116,9 @@ const useContract = create<ContractStore>((set, get) => ({
         type: c.type,
         name: c.name,
         html: c.html,
-        file: arrayUnion(...images),
+        file: images,
+        details: c.details,
+
         updatedAt: serverTimestamp(),
       });
     } catch (e) {

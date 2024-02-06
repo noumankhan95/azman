@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ref, getDownloadURL } from 'firebase/storage';
+import { ref, getDownloadURL, deleteObject } from 'firebase/storage';
 //@ts-ignore
 import { storage } from '../firebase.js';
 
@@ -10,6 +10,7 @@ const DynamicFirebaseImageComponent = ({
   storagePath: string;
   removeImage: (img: string) => void;
 }) => {
+  console.log(storagePath);
   return (
     <div>
       <>
@@ -22,8 +23,14 @@ const DynamicFirebaseImageComponent = ({
           xmlns="http://www.w3.org/2000/svg"
           stroke="#ff0000"
           className="cursor-pointer"
-          onClick={() => {
-            removeImage(storagePath);
+          onClick={async () => {
+            try {
+              await deleteObject(ref(storage, storagePath));
+
+              removeImage(storagePath);
+            } catch (e) {
+              console.log(e);
+            }
           }}
         >
           <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

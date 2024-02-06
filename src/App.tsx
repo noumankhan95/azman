@@ -82,7 +82,7 @@ function App() {
           {!isloggedIn && !loading ? (
             <>
               <Route path="/auth/signin" element={<SignIn />} />
-              <Route path="/auth/signup" element={<SignUp />} />
+              {/* <Route path="/auth/signup" element={<SignUp />} /> */}
               <Route path="*" element={<SignUp />} />
             </>
           ) : (

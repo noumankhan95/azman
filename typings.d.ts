@@ -29,6 +29,7 @@ type Contract = {
   type: string;
   file: Array<{ url: string | File }>;
   html: string;
+  details: Array<{ from: string; to: string; price: number }>;
 };
 
 type ContractStore = {
