@@ -316,9 +316,9 @@ function AddContract() {
                 className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
               >
                 <option value={''}>Select</option>
-                <option value={'Type 1'}>Type 1</option>
-                <option value={'Type 2'}>Type 2</option>
-                <option value={'Type 3'}>Type 3</option>
+                <option>Rental</option>
+                <option>Selling</option>
+                <option>Installment</option>
               </Field>
               <ErrorMessage
                 name="type"
@@ -330,9 +330,44 @@ function AddContract() {
           <div className="overflow-hidden rounded-sm border border-strokeshadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="px-4 py-5 pb-6 text-center lg:pb-8 xl:pb-11.5">
               <h1>Choose Image</h1>
-              <div className="relative z-30 mx-auto  h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
+              <div className="relative z-30 mx-auto  h-30 w-full max-w-30 rounded-full p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
                 <div className="relative drop-shadow-2">
-                  <img src={userSix} alt="profile" />
+                  <svg
+                    viewBox="0 0 1024 1024"
+                    className="icon"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="#000000"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M853.333333 960H170.666667V64h469.333333l213.333333 213.333333z"
+                        fill="#90CAF9"
+                      ></path>
+                      <path
+                        d="M821.333333 298.666667H618.666667V96z"
+                        fill="#E1F5FE"
+                      ></path>
+                      <path
+                        d="M448 490.666667l-149.333333 213.333333h298.666666z"
+                        fill="#1565C0"
+                      ></path>
+                      <path
+                        d="M597.333333 563.2L490.666667 704h213.333333z"
+                        fill="#1976D2"
+                      ></path>
+                      <path
+                        d="M672 522.666667m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z"
+                        fill="#1976D2"
+                      ></path>
+                    </g>
+                  </svg>
                   <label
                     htmlFor="file"
                     className="absolute bottom-0 right-0 flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-full bg-primary text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2"
@@ -365,7 +400,7 @@ function AddContract() {
                       value=""
                       className="sr-only"
                       onChange={(e: any) => {
-                        setimages((p) => [...p, { url: e.target.files?.[0]! }]);
+                        setimages((p) => [{ url: e.target.files?.[0]! }]);
                       }}
                     />
                   </label>

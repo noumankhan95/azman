@@ -37,15 +37,18 @@ function NewUsers() {
   const getUsers = useCallback(async () => {
     try {
       setisloading((p) => true);
-      const qs = await getDocs(
-        query(collection(db, 'users'), where('approval', '==', 'Pending')),
-      );
+      const qs = await getDocs(collection(db, 'users'));
       const usersData: WebsiteUsers[] = [];
       qs.forEach((doc) => {
-        const newUserData = {
-          ...(doc.data() as WebsiteUsers),
-        };
-        usersData.push(newUserData);
+        if (
+          doc.data()?.approval == 'Pending' ||
+          doc.data()?.approval == undefined
+        ) {
+          const newUserData = {
+            ...(doc.data() as WebsiteUsers),
+          };
+          usersData.push(newUserData);
+        }
       });
       setusers(usersData);
     } catch (e) {
@@ -327,7 +330,7 @@ function NewUsers() {
       <div className="my-10 mx-15">
         <div className="flex flex-wrap gap-5 xl:gap-7.5 items-center">
           <button
-            className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+            className="inline-flex items-center justify-center   disabled:bg-body gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
             disabled={page === 1}
             onClick={() => {
               if (page == 1) return;
@@ -360,7 +363,7 @@ function NewUsers() {
           </button>
           <h2>Page {page}</h2>
           <button
-            className="inline-flex items-center justify-center gap-2.5 disabled:cursor-default rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+            className="inline-flex items-center justify-center   disabled:bg-body gap-2.5 disabled:cursor-default rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
             disabled={page == totalPages}
             onClick={() => {
               if (page < totalPages) {

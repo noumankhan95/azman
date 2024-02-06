@@ -85,8 +85,8 @@ const useContract = create<ContractStore>((set, get) => ({
           let name = `contracts/${c.name}/${f.url.name}`;
 
           try {
-            await uploadBytes(ref(storage, name), f.url);
-            images.push({ url: name });
+            const r = await uploadBytes(ref(storage, name), f.url);
+            images.push({ url: r.metadata.fullPath });
             console.log('File Uploaded');
           } catch (e) {
             // alert(e);

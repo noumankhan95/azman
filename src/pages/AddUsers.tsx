@@ -12,11 +12,11 @@ type images = {
   url: File | string;
 };
 const validationSchema = Yup.object().shape({
-  Name: Yup.string().required('Name is required'),
-  ArabicName: Yup.string().required('Arabic Name is required'),
-  phone: Yup.number()
-    .typeError('Phone must be a number')
-    .required('Phone Number is required'),
+  // Name: Yup.string().required('Name is required'),
+  // ArabicName: Yup.string().required('Arabic Name is required'),
+  // phone: Yup.number()
+  //   .typeError('Phone must be a number')
+  //   .required('Phone Number is required'),
 
   email: Yup.string().required('Email is Required'),
 
@@ -28,9 +28,9 @@ function AddUsers() {
   const formikObj = useFormik({
     validationSchema,
     initialValues: {
-      Name: '',
-      ArabicName: '',
-      phone: '',
+      // Name: '',
+      // ArabicName: '',
+      // phone: '',
       email: '',
       password: '',
     },
@@ -44,11 +44,12 @@ function AddUsers() {
           values.email,
           values.password,
         );
-        await setDoc(doc(db, 'users', u.user.uid), {
-          name: values.Name,
-          arabicName: values.ArabicName,
-          phoneNo: values.phone,
+        await setDoc(doc(db, 'admin_user', u.user.uid), {
+          // name: values.Name,
+          // arabicName: values.ArabicName,
+          // phoneNo: values.phone,
           email: values.email,
+          role: 'admin',
         });
         toast.success('Successfully Signed Up, Logging In as New User...');
       } catch (e) {
@@ -61,9 +62,10 @@ function AddUsers() {
 
   return (
     <FormikProvider value={formikObj}>
+      <h1 className="text-2xl my-5">User Information</h1>
+
       <form onSubmit={formikObj.handleSubmit}>
-        <div className="flex flex-col px-6.5 ">
-          <h1 className="text-2xl my-5">User Information</h1>
+        {/* <div className="flex flex-col px-6.5 ">
 
           <div className="flex flex-col items-start space-y-4  justify-around">
             <div className="w-full md:w-2/5">
@@ -99,10 +101,10 @@ function AddUsers() {
               />
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="flex flex-col gap-5.5 p-6.5">
-          <div className="flex space-x-4">
+          {/* <div className="flex space-x-4">
             <div className="w-full md:w-2/5">
               <label className="mb-3 block text-black dark:text-white">
                 Phone
@@ -119,7 +121,7 @@ function AddUsers() {
                 className="text-danger"
               />
             </div>
-          </div>
+          </div> */}
           <div className="flex flex-col md:flex-row md:space-x-4">
             <div className="w-full md:w-2/5">
               <label className="mb-3 block text-black dark:text-white">
