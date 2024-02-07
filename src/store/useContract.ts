@@ -16,7 +16,11 @@ const useContract = create<ContractStore>((set, get) => ({
     name: '',
     type: '',
     file: [],
-    details: [{ from: '', price: 0, to: '' }],
+    installmentdetails: [
+      { downpayment: 0, from: '', ninstallments: 0, to: '', price: 0 },
+    ],
+    rentaldetails: [{ from: '', price: 0, to: '' }],
+    sellingdetails: { price: 0 },
   },
   isEditing: { id: '', value: false },
   setisEditing: (id: string) => {
@@ -59,7 +63,9 @@ const useContract = create<ContractStore>((set, get) => ({
         name: c.name,
         html: c.html,
         file: images,
-        details: c.details,
+        installmentdetails: c.installmentdetails,
+        sellingdetails: c.sellingdetails,
+        rentaldetails: c.rentaldetails,
         createdAt: serverTimestamp(),
       });
     } catch (e) {
@@ -75,14 +81,34 @@ const useContract = create<ContractStore>((set, get) => ({
         name: '',
         type: '',
         file: [],
-        details: [{ from: '', price: 0, to: '' }],
+        installmentdetails: [
+          { downpayment: 0, from: '', ninstallments: 0, to: '', price: 0 },
+        ],
+        rentaldetails: [{ from: '', price: 0, to: '' }],
+        sellingdetails: { price: 0 },
       },
     }));
   },
-  setcontract({ html, name, type, file, details }) {
+  setcontract({
+    html,
+    name,
+    type,
+    file,
+    installmentdetails,
+    rentaldetails,
+    sellingdetails,
+  }) {
     set((state) => ({
       ...state,
-      contract: { html, name, type, file, details },
+      contract: {
+        html,
+        name,
+        type,
+        file,
+        installmentdetails,
+        rentaldetails,
+        sellingdetails,
+      },
     }));
   },
   async updateIndb(c) {
@@ -117,8 +143,9 @@ const useContract = create<ContractStore>((set, get) => ({
         name: c.name,
         html: c.html,
         file: images,
-        details: c.details,
-
+        installmentdetails: c.installmentdetails,
+        sellingdetails: c.sellingdetails,
+        rentaldetails: c.rentaldetails,
         updatedAt: serverTimestamp(),
       });
     } catch (e) {

@@ -13,6 +13,7 @@ import {
 import { type Timestamp } from 'firebase/firestore';
 // @ts-ignore
 import { db } from '../firebase.js';
+import { deleteUser } from 'firebase/auth';
 type AdminUser = { id: string; email: string };
 function AdminUsers() {
   const [showAlert, setshowAlert] = useState(false);

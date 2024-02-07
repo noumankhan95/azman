@@ -28,13 +28,55 @@ type images = {
 const validationSchema = yup.object().shape({
   name: yup.string().required('Name is Required').min(3),
   type: yup.string().required('Type is Required').min(3),
-  details: yup.array().of(
-    yup.object().shape({
-      from: yup.string().required('From is Required'),
-      to: yup.string().required('To is Required'),
-      price: yup.number().min(0).required('Price is Required'),
-    }),
-  ),
+  rentaldetails: yup.array().when('type', {
+    is: (type: string) => type === 'Rental',
+    then: () =>
+      yup.array().of(
+        yup.object().shape({
+          from: yup.string().required('From is Required'),
+          to: yup.string().required('To is Required'),
+          price: yup
+            .number()
+            .min(1, 'Cant be Less than 1')
+            .required('Price is Required'),
+        }),
+      ) as any,
+    otherwise: () => yup.array().notRequired(),
+  }),
+  installmentdetails: yup.array().when('type', {
+    is: (type: string) => type === 'Installment',
+    then: () =>
+      yup.array().of(
+        yup.object().shape({
+          ninstallments: yup
+            .number()
+            .min(1)
+            .required('No Of Installments are Required'),
+          from: yup.string().required('From is Required'),
+          to: yup.string().required('To is Required'),
+          downpayment: yup
+            .number()
+            .min(1, 'Cant be Less than 1')
+            .required('Downpayment is Required'),
+          price: yup
+            .number()
+            .min(1, 'Cant be Less than 1')
+            .required('Price is Required'),
+        }),
+      ) as any,
+    otherwise: () => yup.array().notRequired(),
+  }),
+  sellingdetails: yup.object().when('type', {
+    is: (type: string) => type === 'Selling',
+    then: () =>
+      yup.object().shape({
+        price: yup
+          .number()
+          .min(0, 'Price Cant be Less Than 0')
+          .required('Price is Required'),
+      }) as any,
+    otherwise: () => yup.object().notRequired(),
+  }),
 });
 
 function AddContract() {
@@ -48,13 +90,25 @@ function AddContract() {
     initialValues: {
       name: contract.name || '',
       type: contract.type || '',
-      details: contract.details || [
+      rentaldetails: contract.rentaldetails || [
         {
           from: '',
           to: '',
           price: 0,
         },
       ],
+      installmentdetails: contract.installmentdetails || [
+        {
+          downpayment: 0,
+          from: '',
+          ninstallments: 0,
+          to: '',
+          price: 0,
+        },
+      ],
+      sellingdetails: contract.sellingdetails || {
+        price: 0,
+      },
     },
     validationSchema,
     async onSubmit(values, formikHelpers) {
@@ -83,7 +137,9 @@ function AddContract() {
             html: content,
             name: values.name,
             type: values.type,
-            details: values.details,
+            installmentdetails: values.installmentdetails,
+            rentaldetails: values.rentaldetails,
+            sellingdetails: values.sellingdetails,
           });
         } else {
           await addToDb({
@@ -91,7 +147,9 @@ function AddContract() {
             html: content,
             name: values.name,
             type: values.type,
-            details: values.details,
+            installmentdetails: values.installmentdetails,
+            rentaldetails: values.rentaldetails,
+            sellingdetails: values.sellingdetails,
           });
         }
         toast.success('Successfully Added');
@@ -294,6 +352,7 @@ function AddContract() {
       </div>
     );
   }, [images]);
+  console.log(formikObj.errors);
   return (
     <FormikProvider value={formikObj}>
       <div className="flex flex-col gap-5.5 p-6.5">
@@ -328,10 +387,10 @@ function AddContract() {
                 name="type"
                 className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
               >
-                <option value={''}>Select</option>
-                <option>Rental</option>
-                <option>Selling</option>
-                <option>Installment</option>
+                <option>Select</option>
+                <option value={'Rental'}>Rental</option>
+                <option value={'Selling'}>Selling</option>
+                <option value={'Installment'}>Installment</option>
               </Field>
               <ErrorMessage
                 name="type"
@@ -341,99 +400,218 @@ function AddContract() {
             </div>
           </div>
           <div className="flex flex-col">
-            {formikObj.values.details.map((d, index) => (
-              <div
-                className="w-full flex flex-col lg:flex-row lg:space-x-5 my-3 "
-                key={index}
-              >
-                <div className="w-full md:w-2/5 ">
-                  <label className="mb-3 block text-black dark:text-white">
-                    From
-                  </label>
-                  <Field
-                    type="text"
-                    name={`details.${index}.from`}
-                    placeholder="From"
-                    className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />
-                  <ErrorMessage
-                    name={`details.${index}.from`}
-                    component="div"
-                    className="text-danger"
-                  />
+            {formikObj.values.type === 'Rental' &&
+              formikObj.values.rentaldetails.map((d, index) => (
+                <div
+                  className="w-full flex flex-col lg:flex-row lg:space-x-5 my-3 "
+                  key={index}
+                >
+                  <div className="w-full md:w-2/5 ">
+                    <label className="mb-3 block text-black dark:text-white">
+                      From
+                    </label>
+                    <Field
+                      type="text"
+                      name={`rentaldetails.${index}.from`}
+                      placeholder="From"
+                      className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+                    <ErrorMessage
+                      name={`rentaldetails.${index}.from`}
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
+                  <div className="w-full md:w-2/5">
+                    <label className="mb-3 block text-black dark:text-white">
+                      To
+                    </label>
+                    <Field
+                      type="text"
+                      name={`rentaldetails.${index}.to`}
+                      placeholder="To"
+                      className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+                    <ErrorMessage
+                      name={`rentaldetails.${index}.to`}
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
+                  <div className="w-full md:w-2/5">
+                    <label className="mb-3 block text-black dark:text-white">
+                      Price
+                    </label>
+                    <Field
+                      type="number"
+                      name={`rentaldetails.${index}.price`}
+                      className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+                    <ErrorMessage
+                      name={`rentaldetails.${index}.price`}
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
                 </div>
-                <div className="w-full md:w-2/5">
-                  <label className="mb-3 block text-black dark:text-white">
-                    To
-                  </label>
-                  <Field
-                    type="text"
-                    name={`details.${index}.to`}
-                    placeholder="To"
-                    className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />
-                  <ErrorMessage
-                    name={`details.${index}.to`}
-                    component="div"
-                    className="text-danger"
-                  />
+              ))}
+            {formikObj.values.type === 'Installment' &&
+              formikObj.values.installmentdetails.map((d, index) => (
+                <div
+                  className="w-full flex flex-col lg:flex-row lg:space-x-5 my-3 "
+                  key={index}
+                >
+                  <div className="w-full md:w-2/5 ">
+                    <label className="mb-3 block text-black dark:text-white">
+                      From
+                    </label>
+                    <Field
+                      type="text"
+                      name={`installmentdetails.${index}.from`}
+                      placeholder="From"
+                      className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+                    <ErrorMessage
+                      name={`installmentdetails.${index}.from`}
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
+                  <div className="w-full md:w-2/5">
+                    <label className="mb-3 block text-black dark:text-white">
+                      To
+                    </label>
+                    <Field
+                      type="text"
+                      name={`installmentdetails.${index}.to`}
+                      placeholder="To"
+                      className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+                    <ErrorMessage
+                      name={`installmentdetails.${index}.to`}
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
+                  <div className="w-full md:w-2/5">
+                    <label className="mb-3 block text-black dark:text-white">
+                      No Of Installments
+                    </label>
+                    <Field
+                      type="number"
+                      name={`installmentdetails.${index}.ninstallments`}
+                      className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+                    <ErrorMessage
+                      name={`installmentdetails.${index}.ninstallments`}
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
+                  <div className="w-full md:w-2/5">
+                    <label className="mb-3 block text-black dark:text-white">
+                      Downpayment
+                    </label>
+                    <Field
+                      type="number"
+                      name={`installmentdetails.${index}.downpayment`}
+                      placeholder="%"
+                      className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+                    <ErrorMessage
+                      name={`installmentdetails.${index}.downpayment`}
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
+                  <div className="w-full md:w-2/5">
+                    <label className="mb-3 block text-black dark:text-white">
+                      Price
+                    </label>
+                    <Field
+                      type="number"
+                      name={`installmentdetails.${index}.price`}
+                      placeholder="Price"
+                      className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+                    <ErrorMessage
+                      name={`installmentdetails.${index}.price`}
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
                 </div>
+              ))}
+            {formikObj.values.type === 'Selling' && (
+              <div className="w-full flex flex-col lg:flex-row lg:space-x-5 my-3 ">
                 <div className="w-full md:w-2/5">
                   <label className="mb-3 block text-black dark:text-white">
                     Price
                   </label>
                   <Field
                     type="number"
-                    name={`details.${index}.price`}
+                    name={`sellingdetails.price`}
                     className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
                   <ErrorMessage
-                    name={`details.${index}.price`}
+                    name={`sellingdetails.price`}
                     component="div"
                     className="text-danger"
                   />
                 </div>
               </div>
-            ))}
+            )}
           </div>
-          <div className="w-full relative -mt-4">
-            <svg
-              viewBox="0 0 1024 1024"
-              height={30}
-              width={30}
-              version="1.1"
-              className="icon absolute right-0 cursor-pointer"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="#000000"
-              onClick={() => {
-                formikObj.setFieldValue('details', [
-                  ...formikObj.values.details,
-                  { from: '', to: '', price: 0 },
-                ]);
-              }}
-            >
-              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                <path
-                  d="M512 1024C229.7 1024 0 794.3 0 512S229.7 0 512 0s512 229.7 512 512-229.7 512-512 512z m0-938.7C276.7 85.3 85.3 276.7 85.3 512S276.7 938.7 512 938.7 938.7 747.3 938.7 512 747.3 85.3 512 85.3z"
-                  fill="#00ff2a"
-                ></path>
-                <path
-                  d="M682.7 554.7H341.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h341.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.6 42.7z"
-                  fill="#00ff1e"
-                ></path>
-                <path
-                  d="M512 725.3c-23.6 0-42.7-19.1-42.7-42.7V341.3c0-23.6 19.1-42.7 42.7-42.7s42.7 19.1 42.7 42.7v341.3c0 23.6-19.1 42.7-42.7 42.7z"
-                  fill="#00ff1e"
-                ></path>
-              </g>
-            </svg>
-          </div>
+          {(formikObj.values.type == 'Rental' ||
+            formikObj.values.type === 'Installment') && (
+            <div className="w-full relative -mt-4">
+              <svg
+                viewBox="0 0 1024 1024"
+                height={30}
+                width={30}
+                version="1.1"
+                className="icon absolute right-0 cursor-pointer"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="#000000"
+                onClick={() => {
+                  const type = formikObj.values.type;
+                  if (type === 'Rental') {
+                    formikObj.setFieldValue('rentaldetails', [
+                      ...formikObj.values.rentaldetails,
+                      { from: '', to: '', price: 0 },
+                    ]);
+                  } else if (type === 'Installment') {
+                    formikObj.setFieldValue('installmentdetails', [
+                      ...formikObj.values.installmentdetails,
+                      { from: '', to: '', downpayment: 0, ninstallments: 0 },
+                    ]);
+                  } else if (type === 'Selling') {
+                  }
+                }}
+              >
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M512 1024C229.7 1024 0 794.3 0 512S229.7 0 512 0s512 229.7 512 512-229.7 512-512 512z m0-938.7C276.7 85.3 85.3 276.7 85.3 512S276.7 938.7 512 938.7 938.7 747.3 938.7 512 747.3 85.3 512 85.3z"
+                    fill="#00ff2a"
+                  ></path>
+                  <path
+                    d="M682.7 554.7H341.3c-23.6 0-42.7-19.1-42.7-42.7s19.1-42.7 42.7-42.7h341.3c23.6 0 42.7 19.1 42.7 42.7s-19.1 42.7-42.6 42.7z"
+                    fill="#00ff1e"
+                  ></path>
+                  <path
+                    d="M512 725.3c-23.6 0-42.7-19.1-42.7-42.7V341.3c0-23.6 19.1-42.7 42.7-42.7s42.7 19.1 42.7 42.7v341.3c0 23.6-19.1 42.7-42.7 42.7z"
+                    fill="#00ff1e"
+                  ></path>
+                </g>
+              </svg>
+            </div>
+          )}
 
           <div className="overflow-hidden rounded-sm border border-strokeshadow-default dark:border-strokedark my-5 dark:bg-boxdark">
             <div className="px-4 py-5 pb-6 text-center lg:pb-8 xl:pb-11.5">

@@ -29,7 +29,15 @@ type Contract = {
   type: string;
   file: Array<{ url: string | File }>;
   html: string;
-  details: Array<{ from: string; to: string; price: number }>;
+  rentaldetails?: Array<{ from: string; to: string; price: number }>;
+  installmentdetails?: Array<{
+    from: string;
+    to: string;
+    ninstallments: number;
+    downpayment: number;
+    price: number;
+  }>;
+  sellingdetails?: { price: number };
 };
 
 type ContractStore = {
