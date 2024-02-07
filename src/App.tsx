@@ -25,9 +25,10 @@ function App() {
     setLoading((p) => true);
     const sub = onAuthStateChanged(auth, (user) => {
       if (user) {
-        getDoc(doc(db, 'users', user.uid))
+        console.log(user.uid);
+        getDoc(doc(db, 'admin_user', user.uid))
           .then((u) => {
-            console.log(u?.data()?.permissions, 'per');
+            console.log(u?.data(), 'per');
             setisloggedIn({
               ...u?.data(),
               uid: user.uid,

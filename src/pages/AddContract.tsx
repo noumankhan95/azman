@@ -6,10 +6,9 @@ import React, {
   useEffect,
 } from 'react';
 import { FormikProvider, Field, ErrorMessage, useFormik } from 'formik';
-import user from '../images/user/user-01.png';
+import logo from '../images/logo/logo.jpeg';
 
 import * as yup from 'yup';
-import userSix from '../images/user/user-06.png';
 import DynamicFirebaseImageComponent from '../components/DynamicFirebaseImageComponent';
 import ContractComponent from '../components/ContractComponent';
 import { LoaderIcon } from 'react-hot-toast';
@@ -163,6 +162,9 @@ function AddContract() {
       }
     },
   });
+  const AddButtonTextToHtml = useCallback((btntext: string) => {
+    setContent((c) => c.concat(btntext));
+  }, []);
   const contentRef = useRef<any>();
   const maxWords = 1000; // Set your desired maximum number of words
   useEffect(() => {
@@ -172,11 +174,11 @@ function AddContract() {
     });
   }, [contract.type]);
   // Function to strip HTML tags from a string
-  console.log(contract);
   const stripHtmlTags = (html: any) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || '';
   };
+  console.log(content);
 
   const handleChange = (value: any) => {
     const plainTextContent = stripHtmlTags(value);
@@ -352,7 +354,6 @@ function AddContract() {
       </div>
     );
   }, [images]);
-  console.log(formikObj.errors);
   return (
     <FormikProvider value={formikObj}>
       <div className="flex flex-col gap-5.5 p-6.5">
@@ -697,18 +698,38 @@ function AddContract() {
           </div>
           <>
             <div>
-              <ReactQuill
-                theme="snow" // or 'bubble' for a different theme
-                value={content}
-                onChange={handleChange}
-                className="h-100 mb-20"
-                modules={{ toolbar: toolbarOptions }}
-              />
+              <div>
+                <ReactQuill
+                  theme="snow" // or 'bubble' for a different theme
+                  value={content}
+                  onChange={handleChange}
+                  className="h-100 mb-20"
+                  modules={{ toolbar: toolbarOptions }}
+                />
+                <button
+                  className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                  type='button'
+                  onClick={AddButtonTextToHtml.bind(null, '{{first_name}}')}
+                >
+                  Add First Name
+                </button>
+                <button
+                  className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                  type='button'
+                  onClick={AddButtonTextToHtml.bind(null, '{{last_name}}')}
+                >
+                  Add Last Name
+                </button>
+              </div>
+
               <h3 className="text-2xl dark:text-white my-10">Preview</h3>
 
               <div className="border-2 border-solid border-dark dark:border-white px-4 py-3">
                 <section ref={contentRef}>
-                  <img src={user} />
+                  {/* <div className="flex items-center">
+                    <img src={logo} className="h-40 w-52 object-contain" />
+                    <h2 className="text-6xl font-semibold ">Azman</h2>
+                  </div> */}
                   <div
                     className="ql-editor"
                     id="div-tToPrint"

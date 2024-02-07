@@ -1,6 +1,6 @@
 type WebsiteUsers = {
   uid: string;
-  role?: Roles;
+  role?: string[];
   email: string;
   name: string;
   phoneNo: string;
@@ -16,8 +16,8 @@ type WebsiteUsers = {
 interface UserAuth extends WebsiteUsers {
   isloggedIn: boolean;
   setisloggedIn: (user: { isloggedIn: boolean } & WebsiteUsers) => void;
+  setuser: (user: { isloggedIn?: boolean } & WebsiteUsers) => void;
 }
-type Roles = 'Staff' | 'Admin' | 'User';
 
 type Approval = 'Pending' | 'Approved' | 'Disapproved';
 

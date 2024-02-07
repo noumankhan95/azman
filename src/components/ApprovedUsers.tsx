@@ -13,6 +13,7 @@ import {
 import { type Timestamp } from 'firebase/firestore';
 // @ts-ignore
 import { db } from '../firebase.js';
+import useUserAuth from '../store/useUserAuth.js';
 
 function ApprovedUsers() {
   const [showAlert, setshowAlert] = useState(false);
@@ -28,6 +29,7 @@ function ApprovedUsers() {
   const startIndex = (page - 1) * ItemsperPage;
   const endIndex = startIndex + ItemsperPage;
   const currentItems = users.slice(startIndex, endIndex);
+  const { setuser } = useUserAuth();
   const getUsers = useCallback(async () => {
     try {
       setisloading((p) => true);
@@ -216,9 +218,11 @@ function ApprovedUsers() {
                   <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
                     <h5
                       className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6"
-                      onClick={() =>
-                        navigate('/userDetails', { state: { user: u } })
-                      }
+                      onClick={() => {
+                        console.log('user', u);
+                        setuser(u);
+                        navigate('/userDetails');
+                      }}
                     >
                       View Details
                     </h5>

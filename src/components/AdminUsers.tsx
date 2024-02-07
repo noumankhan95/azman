@@ -14,6 +14,7 @@ import { type Timestamp } from 'firebase/firestore';
 // @ts-ignore
 import { db } from '../firebase.js';
 import { deleteUser } from 'firebase/auth';
+import useUserAuth from '../store/useUserAuth.js';
 type AdminUser = { id: string; email: string };
 function AdminUsers() {
   const [showAlert, setshowAlert] = useState(false);
@@ -29,6 +30,7 @@ function AdminUsers() {
   const startIndex = (page - 1) * ItemsperPage;
   const endIndex = startIndex + ItemsperPage;
   const currentItems = users.slice(startIndex, endIndex);
+  const { role } = useUserAuth();
   const getUsers = useCallback(async () => {
     try {
       setisloading((p) => true);
@@ -177,15 +179,18 @@ function AdminUsers() {
                     </h5>
                   </td>
                   <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
-                    <h5
-                      className="text-sm font-medium cursor-pointer xsm:text-base text-danger text-center whitespace-normal hover:text-meta-6"
-                      onClick={() => {
-                        settodelete({ email: u.email, id: u.id });
-                        setshowAlert(true);
-                      }}
-                    >
-                      Delete
-                    </h5>
+                    {(role?.includes('User Delete') ||
+                      role?.includes('User All')) && (
+                      <h5
+                        className="text-sm font-medium cursor-pointer xsm:text-base text-danger text-center whitespace-normal hover:text-meta-6"
+                        onClick={() => {
+                          settodelete({ email: u.email, id: u.id });
+                          setshowAlert(true);
+                        }}
+                      >
+                        Delete
+                      </h5>
+                    )}
                   </td>
                 </tr>
               ))}

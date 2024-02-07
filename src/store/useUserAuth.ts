@@ -14,7 +14,7 @@ const useUserAuth = create<UserAuth>((set) => ({
   approval: '',
   date: '',
   status: '',
-  role: 'User',
+  role: [],
   setisloggedIn({ email, name, phoneNo, role, uid, isloggedIn }) {
     set((state) => ({
       ...state,
@@ -24,6 +24,35 @@ const useUserAuth = create<UserAuth>((set) => ({
       role,
       isloggedIn,
       uid,
+    }));
+  },
+  setuser({
+    email,
+    name,
+    phoneNo,
+    role,
+    uid,
+    aldolat,
+    almadina,
+    almontaqatha,
+    approval,
+    cnic,
+    date,
+    status,
+  }) {
+    set((state) => ({
+      ...state,
+      email,
+      name,
+      phoneNo,
+      uid,
+      aldolat,
+      almadina,
+      almontaqatha,
+      approval,
+      cnic,
+      date,
+      status,
     }));
   },
 }));
