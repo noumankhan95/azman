@@ -38,6 +38,7 @@ type Contract = {
     price: number;
   }>;
   sellingdetails?: { price: number };
+  questions: Array<{ question: string; answer: string }>;
 };
 
 type ContractStore = {

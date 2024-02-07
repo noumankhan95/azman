@@ -21,6 +21,7 @@ const useContract = create<ContractStore>((set, get) => ({
     ],
     rentaldetails: [{ from: '', price: 0, to: '' }],
     sellingdetails: { price: 0 },
+    questions: [{ answer: '', question: '' }],
   },
   isEditing: { id: '', value: false },
   setisEditing: (id: string) => {
@@ -67,6 +68,7 @@ const useContract = create<ContractStore>((set, get) => ({
         sellingdetails: c.sellingdetails,
         rentaldetails: c.rentaldetails,
         createdAt: serverTimestamp(),
+        questions: c.questions,
       });
     } catch (e) {
       console.log(e);
@@ -86,6 +88,7 @@ const useContract = create<ContractStore>((set, get) => ({
         ],
         rentaldetails: [{ from: '', price: 0, to: '' }],
         sellingdetails: { price: 0 },
+        questions: [{ answer: '', question: '' }],
       },
     }));
   },
@@ -97,6 +100,7 @@ const useContract = create<ContractStore>((set, get) => ({
     installmentdetails,
     rentaldetails,
     sellingdetails,
+    questions,
   }) {
     set((state) => ({
       ...state,
@@ -108,6 +112,7 @@ const useContract = create<ContractStore>((set, get) => ({
         installmentdetails,
         rentaldetails,
         sellingdetails,
+        questions,
       },
     }));
   },
@@ -146,6 +151,7 @@ const useContract = create<ContractStore>((set, get) => ({
         installmentdetails: c.installmentdetails,
         sellingdetails: c.sellingdetails,
         rentaldetails: c.rentaldetails,
+        questions: c.questions,
         updatedAt: serverTimestamp(),
       });
     } catch (e) {
