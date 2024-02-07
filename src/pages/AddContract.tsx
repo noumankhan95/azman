@@ -648,7 +648,7 @@ function AddContract() {
               </div>
             ))}
           </div>
-          <div className="w-full relative -mt-4 right-203">
+          <div className="w-full relative -mt-4  lg:right-203">
             <svg
               viewBox="0 0 1024 1024"
               height={30}
