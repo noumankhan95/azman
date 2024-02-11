@@ -778,7 +778,7 @@ function AddContract() {
                   className="h-100 mb-20"
                   modules={{ toolbar: toolbarOptions }}
                 />
-                <div className="my-30 lg:my-1 flex flex-wrap space-y-3">
+                <div className="my-30 lg:my-1 flex flex-wrap space-y-3 lg:space-y-0 lg:gap-3 justify-start items-center">
                   <button
                     className="px-4 !py-2 lg:py-0  bg-meta-1 rounded-md mx-2 text-white"
                     type="button"
