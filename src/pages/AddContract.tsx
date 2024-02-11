@@ -631,7 +631,7 @@ function AddContract() {
               >
                 <div className="w-full md:w-2/5 ">
                   <label className="mb-3 block text-black dark:text-white">
-                    Question {index+1}
+                    Question {index + 1}
                   </label>
                   <Field
                     type="text"
@@ -778,20 +778,138 @@ function AddContract() {
                   className="h-100 mb-20"
                   modules={{ toolbar: toolbarOptions }}
                 />
-                <button
-                  className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
-                  type="button"
-                  onClick={AddButtonTextToHtml.bind(null, '{{first_name}}')}
-                >
-                  Add First Name
-                </button>
-                <button
-                  className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
-                  type="button"
-                  onClick={AddButtonTextToHtml.bind(null, '{{last_name}}')}
-                >
-                  Add Last Name
-                </button>
+                <div className="my-30 lg:my-1 flex flex-wrap space-y-3">
+                  <button
+                    className="px-4 !py-2 lg:py-0  bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contracteeName}}',
+                    )}
+                  >
+                    Add Contractee Name
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contracteeCnic}}',
+                    )}
+                  >
+                    Add Contractee Cnic
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contracteeEmail}}',
+                    )}
+                  >
+                    Add Contractee Email
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contracteeMembershipId}}',
+                    )}
+                  >
+                    Add Contractee Membership Id
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorName}}',
+                    )}
+                  >
+                    Add Contractor Name
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorCnic}}',
+                    )}
+                  >
+                    Add Contractor Cnic{' '}
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorEmail}}',
+                    )}
+                  >
+                    Add Contractor Email
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorPhoneNo}}',
+                    )}
+                  >
+                    Add Contractor Phone Number
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorDuration}}',
+                    )}
+                  >
+                    Add Contractor Duration
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorAmount}}',
+                    )}
+                  >
+                    Add Contractor Amount
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorType}}',
+                    )}
+                  >
+                    Add Contractor Type
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorInstallmentAmount}}',
+                    )}
+                  >
+                    Add Contractor Installment Amount
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorDownpaymentAmount}}',
+                    )}
+                  >
+                    Add Contractor Downpayment Amount
+                  </button>
+                </div>
               </div>
 
               <h3 className="text-2xl dark:text-white my-10">Preview</h3>
