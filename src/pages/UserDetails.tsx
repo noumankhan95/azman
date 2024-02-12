@@ -1,11 +1,12 @@
 import { Timestamp, doc, updateDoc } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useNavigation } from 'react-router-dom';
 //@ts-ignore
 import { db } from '../firebase.js';
 import { toast } from 'react-toastify';
 import { LoaderIcon } from 'react-hot-toast';
 import useUserAuth from '../store/useUserAuth.js';
+import DynamicFirebaseImageComponent from '../components/DynamicFirebaseImageComponent.js';
 type Orders = {
   id: string;
   orderNumber: string;
@@ -64,6 +65,7 @@ function UserDetails() {
     }
   };
   console.log(user);
+  const removeImage = useCallback(() => {}, []);
   return (
     <div>
       <h1 className="text-4xl text-black dark:text-white">User Details</h1>
@@ -344,6 +346,34 @@ function UserDetails() {
                   {user.wakeelDate}
                 </h1>
               </div>
+            </div>
+            <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 justify-start">
+              {user.wakeelAttachedFile1 && (
+                <div className="w-full md:w-2/5">
+                  <h1 className="mb-3 block text-black dark:text-bodydark">
+                    Attachment 1
+                  </h1>
+                  <h1 className="mb-3 block text-black dark:text-white">
+                    <DynamicFirebaseImageComponent
+                      storagePath={user.wakeelAttachedFile1!}
+                      removeImage={removeImage}
+                    />
+                  </h1>
+                </div>
+              )}
+              {user.wakeelAttachedFile2 && (
+                <div className="w-full md:w-2/5">
+                  <h1 className="mb-3 block text-black dark:text-bodydark">
+                    Attachment 2
+                  </h1>
+                  <h1 className="mb-3 block text-black dark:text-white">
+                    <DynamicFirebaseImageComponent
+                      storagePath={user.wakeelAttachedFile1!}
+                      removeImage={removeImage}
+                    />
+                  </h1>
+                </div>
+              )}
             </div>
           </>
         )}
