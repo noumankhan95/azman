@@ -109,13 +109,13 @@ function NewUsers() {
   return (
     <div className="w-full overflow-x-auto">
       <h1 className="text-2xl my-10">New Users</h1>
-      <div className="flex flex-col lg:flex-row w-3/5 justify-between items-center mb-25">
+      <div className="flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-3/5 lg:justify-between lg:items-center lg:mb-25">
         <label className="mb-3 block text-black dark:text-white">
           Filter By
         </label>
         <select
           name="type"
-          className="w-2/5  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+          className="w-full lg:w-2/5  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
           onChange={(e) => {
             console.log('changed', e.target.value);
             setfilterValue(e.target.value!);
