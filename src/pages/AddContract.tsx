@@ -148,6 +148,8 @@ function AddContract() {
             sellingdetails: values.sellingdetails,
             questions: values.questions,
           });
+          resetContract();
+          navigate('/contracts');
         } else {
           await addToDb({
             file: images,
@@ -160,9 +162,7 @@ function AddContract() {
             questions: values.questions,
           });
         }
-        toast.success('Successfully Added');
-        resetContract();
-        navigate('/contracts');
+        toast.success('Success');
       } catch (e) {
         console.log(e);
         return toast.error('An Error Occured ');
