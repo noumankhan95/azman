@@ -9,8 +9,16 @@ type WebsiteUsers = {
   aldolat: string;
   almadina: string;
   almontaqatha: string;
+  capacity?: string;
   approval: string;
   status: string;
+  wakeelAttachedFile1?: string;
+  wakeelAttachedFile2?: string;
+  wakeelCNIC?: string;
+  wakeelDate?: string;
+  wakeelDescription?: string;
+  wakeelName?: string;
+  wakeelPNO?: string;
 };
 
 interface UserAuth extends WebsiteUsers {

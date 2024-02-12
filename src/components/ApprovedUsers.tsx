@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LoaderIcon, toast } from 'react-hot-toast';
+import { LoaderIcon } from 'react-hot-toast';
+import { toast } from 'react-toastify';
 import {
   getDocs,
   collection,
@@ -20,6 +21,8 @@ function ApprovedUsers() {
   const navigate = useNavigate();
   const [loading, setisloading] = useState<boolean>(false);
   const [reload, setreload] = useState<boolean>(false);
+  const [filterValue, setfilterValue] = useState<string>('');
+
   const [todelete, settodelete] = useState<{ id: string; email: string }>();
   const [isdeleting, setisdeleting] = useState<boolean>(false);
   const [users, setusers] = useState<WebsiteUsers[]>([]);
@@ -55,9 +58,57 @@ function ApprovedUsers() {
     getUsers();
   }, [reload]);
   console.log(users, 'isers');
+  const filterUsers = useCallback(async () => {
+    try {
+      console.log(filterValue);
+      if (!filterValue) return toast.error('Select Filter Type First');
+      setisloading((p) => true);
+      const qs = await getDocs(
+        query(
+          collection(db, 'users'),
+          where('approval', '==', 'Approved'),
+          where('capacity', '==', filterValue),
+        ),
+      );
+      const usersData: WebsiteUsers[] = [];
+      qs.forEach((doc) => {
+        const newUserData = {
+          ...(doc.data() as WebsiteUsers),
+        };
+        usersData.push(newUserData);
+      });
+      setusers(usersData);
+    } catch (e) {
+    } finally {
+      setisloading((p) => false);
+    }
+  }, [filterValue]);
   return (
     <div className="w-full overflow-x-auto">
-      <h1 className="text-2xl my-10">Approved Users</h1>
+      <h1 className="text-2xl my-5">Approved Users</h1>
+      <div className="flex flex-col lg:flex-row w-3/5 justify-between items-center mb-25">
+        <label className="mb-3 block text-black dark:text-white">
+          Filter By
+        </label>
+        <select
+          name="type"
+          className="w-2/5  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+          onChange={(e) => {
+            console.log('changed', e.target.value);
+            setfilterValue(e.target.value!);
+          }}
+        >
+          <option value={''}>Select</option>
+          <option value={'User'}>User</option>
+          <option value={'Company'}>Company</option>
+        </select>
+        <button
+          className="inline-flex items-center justify-center disabled:cursor-default rounded-md bg-success py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 disabled:bg-body"
+          onClick={filterUsers}
+        >
+          Filter
+        </button>
+      </div>
       {showAlert && (
         <div className="w-1/5 md:w-4/5 right-0 absolute flex bg-boxdark-2  border-l-6 border-[#F87171] z-50   px-7 py-8 shadow-md  md:p-9">
           <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg ">
@@ -130,21 +181,6 @@ function ApprovedUsers() {
           </div>
         </div>
       )}
-      {/* <div className="flex flex-row justify-end">
-        {(permissions.includes('Staff All') ||
-          permissions.includes('Staff Add')) && (
-          <button
-            className="rounded-md inline-flex w-52 items-center justify-center bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-            onClick={() => {
-              setIsNotEditing();
-              EmptyFields();
-              navigate('/addstaff');
-            }}
-          >
-            Create
-          </button>
-        )}
-      </div> */}
 
       <div className="flex flex-col my-4 overflow-x-auto min-w-max">
         <table className="w-full ">

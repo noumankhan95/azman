@@ -27,55 +27,55 @@ type images = {
 const validationSchema = yup.object().shape({
   name: yup.string().required('Name is Required').min(3),
   type: yup.string().required('Type is Required').min(3),
-  rentaldetails: yup.array().when('type', {
-    is: (type: string) => type === 'Rental',
-    then: () =>
-      yup.array().of(
-        yup.object().shape({
-          from: yup.string().required('From is Required'),
-          to: yup.string().required('To is Required'),
-          price: yup
-            .number()
-            .min(1, 'Cant be Less than 1')
-            .required('Price is Required'),
-        }),
-      ) as any,
-    otherwise: () => yup.array().notRequired(),
-  }),
-  installmentdetails: yup.array().when('type', {
-    is: (type: string) => type === 'Installment',
-    then: () =>
-      yup.array().of(
-        yup.object().shape({
-          ninstallments: yup
-            .number()
-            .min(1)
-            .required('No Of Installments are Required'),
-          from: yup.string().required('From is Required'),
-          to: yup.string().required('To is Required'),
-          downpayment: yup
-            .number()
-            .min(1, 'Cant be Less than 1')
-            .required('Downpayment is Required'),
-          price: yup
-            .number()
-            .min(1, 'Cant be Less than 1')
-            .required('Price is Required'),
-        }),
-      ) as any,
-    otherwise: () => yup.array().notRequired(),
-  }),
-  sellingdetails: yup.object().when('type', {
-    is: (type: string) => type === 'Selling',
-    then: () =>
-      yup.object().shape({
-        price: yup
-          .number()
-          .min(0, 'Price Cant be Less Than 0')
-          .required('Price is Required'),
-      }) as any,
-    otherwise: () => yup.object().notRequired(),
-  }),
+  // rentaldetails: yup.array().when('type', {
+  //   is: (type: string) => type === 'Rental',
+  //   then: () =>
+  //     yup.array().of(
+  //       yup.object().shape({
+  //         from: yup.string().required('From is Required'),
+  //         to: yup.string().required('To is Required'),
+  //         price: yup
+  //           .number()
+  //           .min(1, 'Cant be Less than 1')
+  //           .required('Price is Required'),
+  //       }),
+  //     ) as any,
+  //   otherwise: () => yup.array().notRequired(),
+  // }),
+  // installmentdetails: yup.array().when('type', {
+  //   is: (type: string) => type === 'Installment',
+  //   then: () =>
+  //     yup.array().of(
+  //       yup.object().shape({
+  //         ninstallments: yup
+  //           .number()
+  //           .min(1)
+  //           .required('No Of Installments are Required'),
+  //         from: yup.string().required('From is Required'),
+  //         to: yup.string().required('To is Required'),
+  //         downpayment: yup
+  //           .number()
+  //           .min(1, 'Cant be Less than 1')
+  //           .required('Downpayment is Required'),
+  //         price: yup
+  //           .number()
+  //           .min(1, 'Cant be Less than 1')
+  //           .required('Price is Required'),
+  //       }),
+  //     ) as any,
+  //   otherwise: () => yup.array().notRequired(),
+  // }),
+  // sellingdetails: yup.object().when('type', {
+  //   is: (type: string) => type === 'Selling',
+  //   then: () =>
+  //     yup.object().shape({
+  //       price: yup
+  //         .number()
+  //         .min(0, 'Price Cant be Less Than 0')
+  //         .required('Price is Required'),
+  //     }) as any,
+  //   otherwise: () => yup.object().notRequired(),
+  // }),
   questions: yup.array().of(
     yup.object().shape({
       question: yup.string().required('Question is Required'),
@@ -95,25 +95,25 @@ function AddContract() {
     initialValues: {
       name: contract.name || '',
       type: contract.type || '',
-      rentaldetails: contract.rentaldetails || [
-        {
-          from: '',
-          to: '',
-          price: 0,
-        },
-      ],
-      installmentdetails: contract.installmentdetails || [
-        {
-          downpayment: 0,
-          from: '',
-          ninstallments: 0,
-          to: '',
-          price: 0,
-        },
-      ],
-      sellingdetails: contract.sellingdetails || {
-        price: 0,
-      },
+      // rentaldetails: contract.rentaldetails || [
+      //   {
+      //     from: '',
+      //     to: '',
+      //     price: 0,
+      //   },
+      // ],
+      // installmentdetails: contract.installmentdetails || [
+      //   {
+      //     downpayment: 0,
+      //     from: '',
+      //     ninstallments: 0,
+      //     to: '',
+      //     price: 0,
+      //   },
+      // ],
+      // sellingdetails: contract.sellingdetails || {
+      //   price: 0,
+      // },
       questions: contract.questions || [{ question: '', answer: '' }],
     },
     validationSchema,
@@ -143,24 +143,24 @@ function AddContract() {
             html: content,
             name: values.name,
             type: values.type,
-            installmentdetails: values.installmentdetails,
-            rentaldetails: values.rentaldetails,
-            sellingdetails: values.sellingdetails,
+            // installmentdetails: values.installmentdetails,
+            // rentaldetails: values.rentaldetails,
+            // sellingdetails: values.sellingdetails,
             questions: values.questions,
           });
-          resetContract();
-          navigate('/contracts');
         } else {
           await addToDb({
             file: images,
             html: content,
             name: values.name,
             type: values.type,
-            installmentdetails: values.installmentdetails,
-            rentaldetails: values.rentaldetails,
-            sellingdetails: values.sellingdetails,
+            // installmentdetails: values.installmentdetails,
+            // rentaldetails: values.rentaldetails,
+            // sellingdetails: values.sellingdetails,
             questions: values.questions,
           });
+          resetContract();
+          navigate('/contracts');
         }
         toast.success('Success');
       } catch (e) {
@@ -409,8 +409,8 @@ function AddContract() {
               />
             </div>
           </div>
-          <div className="flex flex-col">
-            {formikObj.values.type === 'Rental' &&
+          {/* <div className="flex flex-col"> */}
+          {/* {formikObj.values.type === 'Rental' &&
               formikObj.values.rentaldetails.map((d, index) => (
                 <div
                   className="w-full flex flex-col lg:flex-row lg:space-x-5 my-3 "
@@ -570,9 +570,9 @@ function AddContract() {
                   />
                 </div>
               </div>
-            )}
-          </div>
-          {(formikObj.values.type == 'Rental' ||
+            )} */}
+          {/* </div> */}
+          {/* {(formikObj.values.type == 'Rental' ||
             formikObj.values.type === 'Installment') && (
             <div className="w-full relative -mt-4">
               <svg
@@ -621,7 +621,7 @@ function AddContract() {
                 </g>
               </svg>
             </div>
-          )}
+          )} */}
           <h1>Questions</h1>
           <div className="flex flex-col">
             {formikObj.values.questions?.map((d, index) => (
@@ -771,13 +771,6 @@ function AddContract() {
           <>
             <div>
               <div>
-                <ReactQuill
-                  theme="snow" // or 'bubble' for a different theme
-                  value={content}
-                  onChange={handleChange}
-                  className="h-100 mb-20"
-                  modules={{ toolbar: toolbarOptions }}
-                />
                 <div className="my-30 lg:my-1 flex flex-wrap space-y-3 lg:space-y-0 lg:gap-3 justify-start items-center">
                   <button
                     className="px-4 !py-2 lg:py-0  bg-meta-1 rounded-md mx-2 text-white"
@@ -910,6 +903,146 @@ function AddContract() {
                     Add Contractor Downpayment Amount
                   </button>
                 </div>
+
+                <ReactQuill
+                  theme="snow" // or 'bubble' for a different theme
+                  value={content}
+                  onChange={handleChange}
+                  className="h-100 mb-20 mt-5"
+                  modules={{ toolbar: toolbarOptions }}
+                />
+                {/* <div className="my-30 lg:my-1 flex flex-wrap space-y-3 lg:space-y-0 lg:gap-3 justify-start items-center">
+                  <button
+                    className="px-4 !py-2 lg:py-0  bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contracteeName}}',
+                    )}
+                  >
+                    Add Contractee Name
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contracteeCnic}}',
+                    )}
+                  >
+                    Add Contractee Cnic
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contracteeEmail}}',
+                    )}
+                  >
+                    Add Contractee Email
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contracteeMembershipId}}',
+                    )}
+                  >
+                    Add Contractee Membership Id
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorName}}',
+                    )}
+                  >
+                    Add Contractor Name
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorCnic}}',
+                    )}
+                  >
+                    Add Contractor Cnic{' '}
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorEmail}}',
+                    )}
+                  >
+                    Add Contractor Email
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorPhoneNo}}',
+                    )}
+                  >
+                    Add Contractor Phone Number
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorDuration}}',
+                    )}
+                  >
+                    Add Contractor Duration
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorAmount}}',
+                    )}
+                  >
+                    Add Contractor Amount
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorType}}',
+                    )}
+                  >
+                    Add Contractor Type
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorInstallmentAmount}}',
+                    )}
+                  >
+                    Add Contractor Installment Amount
+                  </button>{' '}
+                  <button
+                    className="px-4 py-2 bg-meta-1 rounded-md mx-2 text-white"
+                    type="button"
+                    onClick={AddButtonTextToHtml.bind(
+                      null,
+                      '{{contractorDownpaymentAmount}}',
+                    )}
+                  >
+                    Add Contractor Downpayment Amount
+                  </button>
+                </div> */}
               </div>
 
               <h3 className="text-2xl dark:text-white my-10">Preview</h3>

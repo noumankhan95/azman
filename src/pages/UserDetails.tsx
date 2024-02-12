@@ -75,12 +75,14 @@ function UserDetails() {
           <h1 className="text-xl text-black dark:text-white">
             Name : {user.name}
           </h1>
-          <h1 className="text-3xl text-black dark:text-meta-8">{user.email}</h1>
+          <h1 className="text-2xl lg:text-3xl text-black dark:text-meta-8">
+            {user.email}
+          </h1>
           <h1 className="text-3xl text-black dark:text-meta-7">{user.date}</h1>
         </div>
 
-        <div className="mb-7.5 flex flex-wrap gap-5 xl:gap-7.5">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full">
+        <div className=" mb-7.5 flex flex-wrap gap-5 xl:gap-7.5">
+          <div className=" space-y-4 lg:space-y-0 flex flex-col lg:flex-row lg:items-center lg:justify-between w-full">
             <div>
               <h1>User Status</h1>
               <div className="inline-flex items-center justify-center gap-2.5 rounded-md bg-meta-3 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
@@ -158,7 +160,7 @@ function UserDetails() {
           </div>
         </div>
         <div className="mb-7.5 flex flex-wrap gap-5 xl:gap-7.5">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full">
+          <div className=" space-y-4 lg:space-y-0 flex flex-col lg:flex-row lg:items-center lg:justify-between w-full">
             <div>
               <h1>User Approval</h1>
               <div className="inline-flex items-center justify-center gap-2.5 rounded-md bg-meta-3 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
@@ -291,6 +293,60 @@ function UserDetails() {
             </h1>
           </div>
         </div>
+        <hr></hr>
+
+        {user.capacity && user.capacity === 'Company' && (
+          <>
+            <h1 className="text-4xl text-black dark:text-white">
+              Company Details
+            </h1>
+
+            <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 justify-start">
+              <div className="w-full md:w-2/5">
+                <h1 className="mb-3 block text-black dark:text-bodydark">
+                  Wakeel Name
+                </h1>
+                <h1 className="mb-3 block text-black dark:text-white">
+                  {user.wakeelName}
+                </h1>
+              </div>
+              <div className="w-full md:w-2/5">
+                <h1 className="mb-3 block text-black dark:text-bodydark">
+                  Wakeel PNO
+                </h1>
+                <h1 className="mb-3 block text-black dark:text-white">
+                  {user.wakeelPNO}
+                </h1>
+              </div>
+              <div className="w-full md:w-2/5">
+                <h1 className="mb-3 block text-black dark:text-bodydark">
+                  Wakeel Cnic
+                </h1>
+                <h1 className="mb-3 block text-black dark:text-white">
+                  {user.wakeelCNIC}
+                </h1>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 justify-start">
+              <div className="w-full md:w-2/5">
+                <h1 className="mb-3 block text-black dark:text-bodydark">
+                  Wakeel Description
+                </h1>
+                <h1 className="mb-3 block text-black dark:text-white">
+                  {user.wakeelDescription}
+                </h1>
+              </div>
+              <div className="w-full md:w-2/5">
+                <h1 className="mb-3 block text-black dark:text-bodydark">
+                  Wakeel Date
+                </h1>
+                <h1 className="mb-3 block text-black dark:text-white">
+                  {user.wakeelDate}
+                </h1>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

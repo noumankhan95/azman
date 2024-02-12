@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LoaderIcon, toast } from 'react-hot-toast';
+import { LoaderIcon } from 'react-hot-toast';
 import {
   getDocs,
   collection,
@@ -14,6 +14,8 @@ import {
 import { type Timestamp } from 'firebase/firestore';
 // @ts-ignore
 import { db } from '../firebase.js';
+import useUserAuth from '../store/useUserAuth.js';
+import { toast } from 'react-toastify';
 
 function NewUsers() {
   const [showAlert, setshowAlert] = useState(false);
@@ -23,6 +25,7 @@ function NewUsers() {
   const [todelete, settodelete] = useState<{ id: string; email: string }>();
   const [isdeleting, setisdeleting] = useState<boolean>(false);
   const [users, setusers] = useState<WebsiteUsers[]>([]);
+  const { setuser } = useUserAuth();
 
   const [approval, setapproval] = useState<{ status: boolean; id: string }>({
     id: '',
@@ -34,6 +37,32 @@ function NewUsers() {
   const startIndex = (page - 1) * ItemsperPage;
   const endIndex = startIndex + ItemsperPage;
   const currentItems = users.slice(startIndex, endIndex);
+  const [filterValue, setfilterValue] = useState<string>('');
+
+  const filterUsers = useCallback(async () => {
+    try {
+      if (!filterValue) return toast.error('Select Filter Type First');
+      setisloading((p) => true);
+      const qs = await getDocs(
+        query(
+          collection(db, 'users'),
+          where('approval', '==', 'Pending'),
+          where('capacity', '==', filterValue),
+        ),
+      );
+      const usersData: WebsiteUsers[] = [];
+      qs.forEach((doc) => {
+        const newUserData = {
+          ...(doc.data() as WebsiteUsers),
+        };
+        usersData.push(newUserData);
+      });
+      setusers(usersData);
+    } catch (e) {
+    } finally {
+      setisloading((p) => false);
+    }
+  }, [filterValue]);
   const getUsers = useCallback(async () => {
     try {
       setisloading((p) => true);
@@ -80,7 +109,29 @@ function NewUsers() {
   return (
     <div className="w-full overflow-x-auto">
       <h1 className="text-2xl my-10">New Users</h1>
-
+      <div className="flex flex-col lg:flex-row w-3/5 justify-between items-center mb-25">
+        <label className="mb-3 block text-black dark:text-white">
+          Filter By
+        </label>
+        <select
+          name="type"
+          className="w-2/5  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+          onChange={(e) => {
+            console.log('changed', e.target.value);
+            setfilterValue(e.target.value!);
+          }}
+        >
+          <option value={''}>Select</option>
+          <option value={'User'}>User</option>
+          <option value={'Company'}>Company</option>
+        </select>
+        <button
+          className="inline-flex items-center justify-center disabled:cursor-default rounded-md bg-success py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 disabled:bg-body"
+          onClick={filterUsers}
+        >
+          Filter
+        </button>
+      </div>
       {showAlert && (
         <div className="w-1/5 md:w-4/5 right-0 absolute flex bg-boxdark-2  border-l-6 border-[#F87171] z-50   px-7 py-8 shadow-md  md:p-9">
           <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg ">
@@ -245,11 +296,10 @@ function NewUsers() {
                   <td className="p-3 text-start">
                     <h5
                       className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6"
-                      onClick={() =>
-                        navigate('/userDetails', {
-                          state: { user: u },
-                        })
-                      }
+                      onClick={() => {
+                        setuser(u);
+                        navigate('/userDetails');
+                      }}
                     >
                       View Details
                     </h5>

@@ -39,6 +39,14 @@ const useUserAuth = create<UserAuth>((set) => ({
     cnic,
     date,
     status,
+    capacity,
+    wakeelCNIC,
+    wakeelDate,
+    wakeelDescription,
+    wakeelName,
+    wakeelPNO,
+    wakeelAttachedFile1,
+    wakeelAttachedFile2,
   }) {
     set((state) => ({
       ...state,
@@ -53,6 +61,14 @@ const useUserAuth = create<UserAuth>((set) => ({
       cnic,
       date,
       status,
+      capacity,
+      wakeelCNIC,
+      wakeelDate,
+      wakeelDescription,
+      wakeelName,
+      wakeelPNO,
+      wakeelAttachedFile1,
+      wakeelAttachedFile2,
     }));
   },
 }));
