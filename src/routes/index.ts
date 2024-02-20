@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+const UserContracts = lazy(() => import('../pages/User_Contracts'));
 
 const Calendar = lazy(() => import('../pages/Calendar'));
 const Chart = lazy(() => import('../pages/Chart'));
@@ -15,6 +16,8 @@ const UserDetails = lazy(() => import('../pages/UserDetails'));
 const Contracts = lazy(() => import('../pages/Contracts'));
 const AddContract = lazy(() => import('../pages/AddContract'));
 const ListadminUsers = lazy(() => import('../pages/ListAdminUsers'));
+const UserContractDetails = lazy(() => import('../pages/UserContractDetail'));
+const FilterUsers = lazy(() => import('../pages/FilterUsers'));
 
 const coreRoutes = [
   {
@@ -91,6 +94,21 @@ const coreRoutes = [
     path: '/ui/buttons',
     title: 'Buttons',
     component: Buttons,
+  },
+  {
+    path: '/userContracts',
+    title: 'User Contracts',
+    component: UserContracts,
+  },
+  {
+    path: '/userContractDetails',
+    title: 'User Contract Details',
+    component: UserContractDetails,
+  },
+  {
+    path: '/filterUsers',
+    title: 'Filter Users',
+    component: FilterUsers,
   },
 ];
 

@@ -16,7 +16,7 @@ import { type Timestamp } from 'firebase/firestore';
 import { db } from '../firebase.js';
 import useUserAuth from '../store/useUserAuth.js';
 
-function ApprovedUsers() {
+function FilterUsers() {
   const [showAlert, setshowAlert] = useState(false);
   const navigate = useNavigate();
   const [loading, setisloading] = useState<boolean>(false);
@@ -58,35 +58,31 @@ function ApprovedUsers() {
     getUsers();
   }, [reload]);
   console.log(users, 'isers');
-  // const filterUsers = useCallback(async () => {
-  //   try {
-  //     console.log(filterValue);
-  //     if (!filterValue) return toast.error('Select Filter Type First');
-  //     setisloading((p) => true);
-  //     const qs = await getDocs(
-  //       query(
-  //         collection(db, 'users'),
-  //         where('approval', '==', 'Approved'),
-  //         where('capacity', '==', filterValue),
-  //       ),
-  //     );
-  //     const usersData: WebsiteUsers[] = [];
-  //     qs.forEach((doc) => {
-  //       const newUserData = {
-  //         ...(doc.data() as WebsiteUsers),
-  //       };
-  //       usersData.push(newUserData);
-  //     });
-  //     setusers(usersData);
-  //   } catch (e) {
-  //   } finally {
-  //     setisloading((p) => false);
-  //   }
-  // }, [filterValue]);
+  const filterUsers = useCallback(async () => {
+    try {
+      console.log(filterValue);
+      if (!filterValue) return toast.error('Select Filter Type First');
+      setisloading((p) => true);
+      const qs = await getDocs(
+        query(collection(db, 'users'), where('capacity', '==', filterValue)),
+      );
+      const usersData: WebsiteUsers[] = [];
+      qs.forEach((doc) => {
+        const newUserData = {
+          ...(doc.data() as WebsiteUsers),
+        };
+        usersData.push(newUserData);
+      });
+      setusers(usersData);
+    } catch (e) {
+    } finally {
+      setisloading((p) => false);
+    }
+  }, [filterValue]);
   return (
     <div className="w-full overflow-x-auto">
-      <h1 className="text-2xl my-5">Approved Users</h1>
-      {/* <div className="flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-3/5 lg:justify-between lg:items-center lg:mb-25">
+      <h1 className="text-2xl my-5">Filter Users</h1>
+      <div className="flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-3/5 lg:justify-between lg:items-center lg:mb-25">
         <label className="mb-3 block text-black dark:text-white">
           Filter By
         </label>
@@ -108,7 +104,7 @@ function ApprovedUsers() {
         >
           Filter
         </button>
-      </div> */}
+      </div>
       {showAlert && (
         <div className="w-1/5 md:w-4/5 right-0 absolute flex bg-boxdark-2  border-l-6 border-[#F87171] z-50   px-7 py-8 shadow-md  md:p-9">
           <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg ">
@@ -345,4 +341,4 @@ function ApprovedUsers() {
   );
 }
 
-export default ApprovedUsers;
+export default FilterUsers;

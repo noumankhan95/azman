@@ -20,7 +20,45 @@ type WebsiteUsers = {
   wakeelName?: string;
   wakeelPNO?: string;
 };
+interface UserContract {
+  baseContractID: string;
+  baseContractStartDate: string;
+  baseContractTitle: string;
+  baseContractType: string;
+  contractHTML: string;
+  contractId: string;
+  contracteeCnic: string;
+  contracteeDate: string;
+  contracteeEmail: string;
+  contracteeMembershipID: string;
+  contracteeName: string;
+  contracteePhoneNo: string;
+  contracteeUid: string;
+  contractorAmount: number;
+  contractorCnic: string;
+  contractorDate: string;
+  contractorDuration: number;
+  contractorEmail: string;
+  contractorName: string;
+  contractorPhoneNo: string;
+  contractorUid: string;
+  questions: Question[];
+  id?: string;
+  installments: Installment[];
+}
+interface Installment {
+  amount: number;
+  date: number;
+  description: string;
+  operationtype: string;
+  remainingAmount: number;
+  status: string;
+}
 
+interface Question {
+  answer: string;
+  question: string;
+}
 interface UserAuth extends WebsiteUsers {
   isloggedIn: boolean;
   setisloggedIn: (user: { isloggedIn: boolean } & WebsiteUsers) => void;
@@ -58,4 +96,10 @@ type ContractStore = {
   isEditing: { value: boolean; id: string };
   setisEditing: (id: string) => void;
   setisNotEditing: () => void;
+};
+
+type UserContractStore = {
+  contract: UserContract;
+  setcontract: (c: UserContract) => void;
+  resetContract: () => void;
 };

@@ -59,7 +59,6 @@ function App() {
           approval: '',
           date: '',
           status: '',
-          role: 'Admin',
         });
         setLoading(false);
       }
