@@ -2,9 +2,7 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 // import { Toaster } from 'react-hot-toast';
 import { ToastContainer } from 'react-toastify';
-import ECommerce from './pages/Dashboard/ECommerce';
 import SignIn from './pages/Authentication/SignIn';
-import SignUp from './pages/Authentication/SignUp';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-quill/dist/quill.snow.css';
 import Loader from './common/Loader';
@@ -14,8 +12,8 @@ import { db, auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import useUserAuth from './store/useUserAuth';
 import { doc, getDoc } from 'firebase/firestore';
-import Tables from './pages/Tables';
-import ListUsers from './pages/ListUsers';
+
+import NewUsers from './pages/NewUsers';
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
@@ -87,14 +85,14 @@ function App() {
             </>
           ) : (
             <Route element={<DefaultLayout />}>
-              <Route index element={<ListUsers />} />
+              <Route index element={<NewUsers />} />
               {routes.map((routes, index) => {
                 const { path, component: Component } = routes;
                 return (
                   <Route key={index} path={path} element={<Component />} />
                 );
               })}
-              <Route path="*" element={<ListUsers />} />
+              <Route path="*" element={<NewUsers />} />
             </Route>
           )}
         </Routes>
