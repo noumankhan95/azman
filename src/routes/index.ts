@@ -11,13 +11,13 @@ const Tables = lazy(() => import('../pages/Tables'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 const AddUsers = lazy(() => import('../pages/AddUsers'));
-const ListUsers = lazy(() => import('../pages/ListUsers'));
 const UserDetails = lazy(() => import('../pages/UserDetails'));
 const Contracts = lazy(() => import('../pages/Contracts'));
 const AddContract = lazy(() => import('../pages/AddContract'));
 const ListadminUsers = lazy(() => import('../pages/ListAdminUsers'));
 const UserContractDetails = lazy(() => import('../pages/UserContractDetail'));
-const FilterUsers = lazy(() => import('../pages/FilterUsers'));
+const NewUsers = lazy(() => import('../pages/NewUsers'));
+const ApprovedUsers = lazy(() => import('../pages/ApprovedUsers'));
 
 const coreRoutes = [
   {
@@ -45,11 +45,7 @@ const coreRoutes = [
     title: 'User Details',
     component: UserDetails,
   },
-  {
-    path: '/listUsers',
-    title: 'List Users',
-    component: ListUsers,
-  },
+
   {
     path: '/addUsers',
     title: 'Staff',
@@ -106,9 +102,14 @@ const coreRoutes = [
     component: UserContractDetails,
   },
   {
-    path: '/filterUsers',
-    title: 'Filter Users',
-    component: FilterUsers,
+    path: '/newUsers',
+    title: 'New Users',
+    component: NewUsers,
+  },
+  {
+    path: '/approvedUsers',
+    title: 'Approved Users',
+    component: ApprovedUsers,
   },
 ];
 

@@ -1,6 +1,6 @@
 import { useCallback, useState, lazy } from 'react';
-const NewUsers = lazy(() => import('../components/NewUsers'));
-const ApprovedUsers = lazy(() => import('../components/ApprovedUsers'));
+const NewUsers = lazy(() => import('./NewUsers'));
+const ApprovedUsers = lazy(() => import('./ApprovedUsers'));
 
 type ListModes = 'Pending' | 'Approved';
 function ListUsers() {

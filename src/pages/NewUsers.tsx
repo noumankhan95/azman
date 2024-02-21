@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoaderIcon } from 'react-hot-toast';
-import { toast } from 'react-toastify';
 import {
   getDocs,
   collection,
@@ -10,34 +9,46 @@ import {
   query,
   where,
   runTransaction,
+  updateDoc,
 } from 'firebase/firestore';
 import { type Timestamp } from 'firebase/firestore';
 // @ts-ignore
 import { db } from '../firebase.js';
 import useUserAuth from '../store/useUserAuth.js';
+import { toast } from 'react-toastify';
 
-function ApprovedUsers() {
+function NewUsers() {
   const [showAlert, setshowAlert] = useState(false);
   const navigate = useNavigate();
   const [loading, setisloading] = useState<boolean>(false);
   const [reload, setreload] = useState<boolean>(false);
-  const [filterValue, setfilterValue] = useState<string>('');
-
   const [todelete, settodelete] = useState<{ id: string; email: string }>();
   const [isdeleting, setisdeleting] = useState<boolean>(false);
   const [users, setusers] = useState<WebsiteUsers[]>([]);
+  const { setuser } = useUserAuth();
+
+  const [approval, setapproval] = useState<{ status: boolean; id: string }>({
+    id: '',
+    status: false,
+  });
   const [page, setpage] = useState<number>(1);
   const ItemsperPage = 10;
   const totalPages = Math.ceil((users.length || 1) / ItemsperPage);
   const startIndex = (page - 1) * ItemsperPage;
   const endIndex = startIndex + ItemsperPage;
   const currentItems = users.slice(startIndex, endIndex);
-  const { setuser } = useUserAuth();
-  const getUsers = useCallback(async () => {
+  const [filterValue, setfilterValue] = useState<string>('');
+
+  const filterUsers = useCallback(async () => {
     try {
+      if (!filterValue) return toast.error('Select Filter Type First');
       setisloading((p) => true);
       const qs = await getDocs(
-        query(collection(db, 'users'), where('approval', '==', 'Approved')),
+        query(
+          collection(db, 'users'),
+          where('approval', '==', 'Pending'),
+          where('capacity', '==', filterValue),
+        ),
       );
       const usersData: WebsiteUsers[] = [];
       qs.forEach((doc) => {
@@ -48,9 +59,32 @@ function ApprovedUsers() {
       });
       setusers(usersData);
     } catch (e) {
-      console.log(e);
     } finally {
       setisloading((p) => false);
+    }
+  }, [filterValue]);
+  const getUsers = useCallback(async () => {
+    try {
+      setisloading((p) => true);
+      const qs = await getDocs(collection(db, 'users'));
+      const usersData: WebsiteUsers[] = [];
+      qs.forEach((doc) => {
+        if (
+          doc.data()?.approval == 'Pending' ||
+          doc.data()?.approval == undefined
+        ) {
+          const newUserData = {
+            ...(doc.data() as WebsiteUsers),
+          };
+          usersData.push(newUserData);
+        }
+      });
+      setusers(usersData);
+    } catch (e) {
+      toast.error('Couldnt Fetch Users,Try Again Later');
+    } finally {
+      setisloading((p) => false);
+      setreload(false);
     }
   }, []);
   console.log(isdeleting, 'is deleting');
@@ -58,35 +92,26 @@ function ApprovedUsers() {
     getUsers();
   }, [reload]);
   console.log(users, 'isers');
-  // const filterUsers = useCallback(async () => {
-  //   try {
-  //     console.log(filterValue);
-  //     if (!filterValue) return toast.error('Select Filter Type First');
-  //     setisloading((p) => true);
-  //     const qs = await getDocs(
-  //       query(
-  //         collection(db, 'users'),
-  //         where('approval', '==', 'Approved'),
-  //         where('capacity', '==', filterValue),
-  //       ),
-  //     );
-  //     const usersData: WebsiteUsers[] = [];
-  //     qs.forEach((doc) => {
-  //       const newUserData = {
-  //         ...(doc.data() as WebsiteUsers),
-  //       };
-  //       usersData.push(newUserData);
-  //     });
-  //     setusers(usersData);
-  //   } catch (e) {
-  //   } finally {
-  //     setisloading((p) => false);
-  //   }
-  // }, [filterValue]);
+  const changeApproval = useCallback(async (mode: string, uid: string) => {
+    try {
+      setapproval((p) => ({ id: uid, status: true }));
+      await updateDoc(doc(db, 'users', uid), {
+        approval: mode,
+      });
+      toast.success('Changed Approval');
+      setreload(true);
+    } catch (e) {
+      toast.error('Couldnt Change Approval, Try Again');
+    } finally {
+      setapproval((p) => ({ id: '', status: false }));
+    }
+  }, []);
   return (
     <div className="w-full overflow-x-auto">
-      <h1 className="text-2xl my-5">Approved Users</h1>
-      {/* <div className="flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-3/5 lg:justify-between lg:items-center lg:mb-25">
+      <h1 className="text-2xl my-10">New Users</h1>
+      <h1 className="text-2xl my-10">Pending New Users : {users.length}</h1>
+
+      <div className="flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-3/5 lg:justify-between lg:items-center lg:mb-25">
         <label className="mb-3 block text-black dark:text-white">
           Filter By
         </label>
@@ -108,7 +133,7 @@ function ApprovedUsers() {
         >
           Filter
         </button>
-      </div> */}
+      </div>
       {showAlert && (
         <div className="w-1/5 md:w-4/5 right-0 absolute flex bg-boxdark-2  border-l-6 border-[#F87171] z-50   px-7 py-8 shadow-md  md:p-9">
           <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg ">
@@ -181,34 +206,53 @@ function ApprovedUsers() {
           </div>
         </div>
       )}
-
+      {/* <div className="flex flex-row justify-end">
+        {(permissions.includes('Staff All') ||
+          permissions.includes('Staff Add')) && (
+          <button
+            className="rounded-md inline-flex w-52 items-center justify-center bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+            onClick={() => {
+              setIsNotEditing();
+              EmptyFields();
+              navigate('/addstaff');
+            }}
+          >
+            Create
+          </button>
+        )}
+      </div> */}
       <div className="flex flex-col my-4 overflow-x-auto min-w-max">
-        <table className="w-full ">
+        <table className="w-full">
           <thead>
             <tr className="grid rounded-sm w-full bg-gray-2 dark:bg-form-strokedark grid-cols-6 gap-4 md:gap-8">
-              <th className="p-3 md:w-1/5 lg:w-1/4">
+              <th className="p-3">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                   Name
                 </h5>
               </th>
-              <th className="p-3 md:w-1/5 lg:w-1/4">
+              <th className="p-3 text-start">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                   Email
                 </h5>
               </th>
-              <th className="p-3 md:w-1/6 lg:w-1/8">
+              <th className="p-3 text-start">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                   Phone
                 </h5>
               </th>
-              <th className="p-3 md:w-1/6 lg:w-1/8">
+              <th className="p-3 text-start">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                   CNIC
                 </h5>
               </th>
-              <th className="p-3 md:w-1/5 lg:w-1/4">
+              <th className="p-3 text-start">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                   Actions
+                </h5>
+              </th>
+              <th className="p-3 text-start">
+                <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
+                  Approval
                 </h5>
               </th>
             </tr>
@@ -228,40 +272,106 @@ function ApprovedUsers() {
               currentItems &&
               currentItems.map((u) => (
                 <tr
-                  className="grid w-full rounded-sm bg-gray-2 dark:bg-meta-4 grid-cols-6 gap-4 md:gap-8 items-start overflow-auto"
+                  className="grid w-full rounded-sm bg-gray-2 dark:bg-meta-4 grid-cols-6  items-start"
                   key={u.uid}
                 >
-                  <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
+                  <td className="p-3 text-start">
                     <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                       {u.name}
                     </h5>
                   </td>
-                  <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
+                  <td className="p-3 text-start">
                     <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
                       {u.email}
                     </h5>
                   </td>
-                  <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
+                  <td className="p-3 text-start">
                     <h5 className="text-sm font-medium xsm:text-base whitespace-normal">
                       {u.phoneNo}
                     </h5>
                   </td>
-                  <td className="p-3 w-3/5 md:w-1/6 lg:w-1/8">
+                  <td className="p-3 text-start">
                     <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                       {u.cnic}
                     </h5>
                   </td>
-                  <td className="p-3 w-3/5 md:w-1/5 lg:w-1/4">
+                  <td className="p-3 text-start">
                     <h5
                       className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6"
                       onClick={() => {
-                        console.log('user', u);
                         setuser(u);
                         navigate('/userDetails');
                       }}
                     >
                       View Details
                     </h5>
+                  </td>
+                  <td className="p-3 text-start flex">
+                    {approval.id === u.uid && approval.status ? (
+                      <LoaderIcon className="h-10 w-10" />
+                    ) : (
+                      <>
+                        <h5 className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6">
+                          <svg
+                            height={45}
+                            width={45}
+                            viewBox="0 -0.5 25 25"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            onClick={changeApproval.bind(
+                              null,
+                              'Approved',
+                              u.uid,
+                            )}
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <path
+                                d="M5.5 12.5L10.167 17L19.5 8"
+                                stroke="#00ff04"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              ></path>
+                            </g>
+                          </svg>
+                        </h5>
+                        <h5 className="text-sm font-medium cursor-pointer xsm:text-base whitespace-normal hover:text-meta-6">
+                          <svg
+                            height={45}
+                            width={45}
+                            viewBox="0 0 1024 1024"
+                            className="icon"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="#000000"
+                            onClick={changeApproval.bind(
+                              null,
+                              'Disapproved',
+                              u.uid,
+                            )}
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <path
+                                d="M512 128C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128z m0 85.333333c66.133333 0 128 23.466667 179.2 59.733334L273.066667 691.2C236.8 640 213.333333 578.133333 213.333333 512c0-164.266667 134.4-298.666667 298.666667-298.666667z m0 597.333334c-66.133333 0-128-23.466667-179.2-59.733334l418.133333-418.133333C787.2 384 810.666667 445.866667 810.666667 512c0 164.266667-134.4 298.666667-298.666667 298.666667z"
+                                fill="#D50000"
+                              ></path>
+                            </g>
+                          </svg>
+                        </h5>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -272,9 +382,7 @@ function ApprovedUsers() {
       <div className="my-10 mx-15">
         <div className="flex flex-wrap gap-5 xl:gap-7.5 items-center">
           <button
-            className="inline-flex items-center
-            disabled:bg-body
-            justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+            className="inline-flex items-center justify-center   disabled:bg-body gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
             disabled={page === 1}
             onClick={() => {
               if (page == 1) return;
@@ -307,7 +415,7 @@ function ApprovedUsers() {
           </button>
           <h2>Page {page}</h2>
           <button
-            className="inline-flex items-center justify-center gap-2.5 disabled:cursor-default rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 disabled:bg-body"
+            className="inline-flex items-center justify-center   disabled:bg-body gap-2.5 disabled:cursor-default rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
             disabled={page == totalPages}
             onClick={() => {
               if (page < totalPages) {
@@ -345,4 +453,4 @@ function ApprovedUsers() {
   );
 }
 
-export default ApprovedUsers;
+export default NewUsers;
