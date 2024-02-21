@@ -4,15 +4,43 @@ import { db } from '../firebase.js';
 import { Fragment } from 'react';
 
 import useUserContract from '../store/useUserContract.js';
-
+//@ts-ignore
+import html2pdf from 'html2pdf.js';
+import { toast } from 'react-toastify';
 function UserContractDetails() {
   const { contract } = useUserContract();
   console.log(contract);
+  const handleGetText = () => {
+    if (!contract.contractHTML)
+      return toast.error('Contract Doesnt Have Data To Download');
+    const options = {
+      filename: 'my-document.pdf',
+      margin: 10, // Adjust the margin to give some space at the edges
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 1 }, // Adjust the scale factor
+      jsPDF: {
+        unit: 'mm', // Change the unit to millimeters
+        format: 'a4',
+        orientation: 'portrait',
+      },
+      pagebreak: { mode: 'avoid-all' },
+    };
+    html2pdf()
+      .set(options)
+      .from(contract.contractHTML)
+      .output('dataurlnewwindow', {
+        // Output PDF directly with custom margins
+        margin: { top: 20, right: 10, bottom: 20, left: 10 }, // Adjust individual margins
+      });
+  };
   return (
     <div>
       <h1 className="text-4xl text-black dark:text-white">
         User Contract Details
       </h1>
+      <button onClick={handleGetText} className="underline my-10 text-meta-5">
+        Download Contract
+      </button>
       <div className="flex flex-col gap-5.5 p-6.5">
         <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 justify-start">
           <div className="w-full md:w-2/5">
