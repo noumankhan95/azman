@@ -181,7 +181,7 @@ function AddContract() {
     const buttonDelta = [{ insert: btntext, attributes: { button: false } }];
 
     quill.updateContents(buttonDelta as any);
-    quill.setSelection(cursorPosition ? cursorPosition + 1 : 0); // Move the cursor to the next line
+    quill.setSelection(cursorPosition! + 1 as any); // Move the cursor to the next line
     // setContent((c) => c.concat(btntext));
   }, []);
   const contentRef = useRef<any>();
