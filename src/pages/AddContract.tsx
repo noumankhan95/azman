@@ -159,6 +159,7 @@ function AddContract() {
             // rentaldetails: values.rentaldetails,
             // sellingdetails: values.sellingdetails,
             questions: values.questions,
+
           });
           resetContract();
           navigate('/contracts');
@@ -181,7 +182,7 @@ function AddContract() {
     const buttonDelta = [{ insert: btntext, attributes: { button: false } }];
 
     quill.updateContents(buttonDelta as any);
-    quill.setSelection(cursorPosition! + 1 as any); // Move the cursor to the next line
+    // quill.setSelection(cursorPosition! + 1 as any); // Move the cursor to the next line
     // setContent((c) => c.concat(btntext));
   }, []);
   const contentRef = useRef<any>();
