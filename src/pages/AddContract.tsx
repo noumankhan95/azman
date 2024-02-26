@@ -87,7 +87,7 @@ const validationSchema = yup.object().shape({
 function AddContract() {
   const [isloading, setisloading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const quillRef = useRef<ReactQuill | null>(null);
+  const quillRef = useRef<any>(null);
   const { contract, updateIndb, addToDb, isEditing, resetContract } =
     useContract();
   const [images, setimages] = useState<images[]>(contract.file!);
@@ -159,7 +159,6 @@ function AddContract() {
             // rentaldetails: values.rentaldetails,
             // sellingdetails: values.sellingdetails,
             questions: values.questions,
-
           });
           resetContract();
           navigate('/contracts');
@@ -177,7 +176,7 @@ function AddContract() {
     const quill = quillRef.current?.getEditor(); // Check if quillRef.current is defined
     if (!quill) return;
 
-    const cursorPosition = quill.getSelection()?.index;
+    // const cursorPosition = quill.getSelection()?.index;
 
     const buttonDelta = [{ insert: btntext, attributes: { button: false } }];
 
