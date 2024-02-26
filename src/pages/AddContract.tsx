@@ -6,7 +6,6 @@ import React, {
   useEffect,
 } from 'react';
 import { FormikProvider, Field, ErrorMessage, useFormik } from 'formik';
-import logo from '../images/logo/logo.jpeg';
 
 import * as yup from 'yup';
 import DynamicFirebaseImageComponent from '../components/DynamicFirebaseImageComponent';
@@ -18,7 +17,7 @@ import { toast } from 'react-toastify';
 import html2pdf from 'html2pdf.js';
 //@ts-ignore
 import { db } from '../firebase.js';
-import * as ReactQuill from 'react-quill';
+import  ReactQuill from 'react-quill';
 import { addDoc, collection } from 'firebase/firestore';
 import useContract from '../store/useContract.js';
 type images = {
