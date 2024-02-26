@@ -43,7 +43,7 @@ const Settings = () => {
   const [reload, setreload] = useState<boolean>(false);
   const [shouldUpdate, setshouldUpdate] = useState<boolean>(false);
   const [images, setimages] = useState<images[]>([]);
-
+  
   const formikobj = useFormik({
     enableReinitialize: true,
     initialValues: {

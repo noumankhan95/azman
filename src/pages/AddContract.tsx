@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 import html2pdf from 'html2pdf.js';
 //@ts-ignore
 import { db } from '../firebase.js';
-import ReactQuill from 'react-quill';
+import * as ReactQuill from 'react-quill';
 import { addDoc, collection } from 'firebase/firestore';
 import useContract from '../store/useContract.js';
 type images = {
@@ -87,6 +87,7 @@ const validationSchema = yup.object().shape({
 function AddContract() {
   const [isloading, setisloading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const quillRef = useRef<ReactQuill | null>(null);
   const { contract, updateIndb, addToDb, isEditing, resetContract } =
     useContract();
   const [images, setimages] = useState<images[]>(contract.file!);
@@ -172,7 +173,16 @@ function AddContract() {
     },
   });
   const AddButtonTextToHtml = useCallback((btntext: string) => {
-    setContent((c) => c.concat(btntext));
+    const quill = quillRef.current?.getEditor(); // Check if quillRef.current is defined
+    if (!quill) return;
+
+    const cursorPosition = quill.getSelection()?.index;
+
+    const buttonDelta = [{ insert: btntext, attributes: { button: false } }];
+
+    quill.updateContents(buttonDelta as any);
+    quill.setSelection(cursorPosition ? cursorPosition + 1 : 0); // Move the cursor to the next line
+    // setContent((c) => c.concat(btntext));
   }, []);
   const contentRef = useRef<any>();
   const maxWords = 1000; // Set your desired maximum number of words
@@ -190,6 +200,7 @@ function AddContract() {
   console.log(content);
 
   const handleChange = (value: any) => {
+    console.log('Button Change');
     const plainTextContent = stripHtmlTags(value);
     // Split the plain text content into words
     const words = plainTextContent.trim().split(/\s+/);
@@ -910,6 +921,7 @@ function AddContract() {
                   onChange={handleChange}
                   className="h-100 mb-20 mt-5"
                   modules={{ toolbar: toolbarOptions }}
+                  ref={quillRef}
                 />
                 {/* <div className="my-30 lg:my-1 flex flex-wrap space-y-3 lg:space-y-0 lg:gap-3 justify-start items-center">
                   <button
