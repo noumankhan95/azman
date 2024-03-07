@@ -9,9 +9,10 @@ const LanguageSwitcher = () => {
     const newLanguage = i18n.language === 'en' ? 'ar' : 'en';
     i18n.changeLanguage(newLanguage);
   };
+
   return (
     <li className="flex flex-row items-center w-3/5 justify-end space-x-5">
-      <h4>Switch Language</h4>
+      <h4>{t('Switch Language')}</h4>
       <label
         className={`relative m-0 block h-7.5 w-14 rounded-full ${
           colorMode === 'dark' ? 'bg-primary' : 'bg-stroke'

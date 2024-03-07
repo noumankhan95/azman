@@ -142,8 +142,8 @@ i18n.use(initReactI18next).init({
                 "Wakeel Date": "تاريخ الوكيل",
                 "Attachment": "مرفق",
                 "User Approval": "موافقة المستخدم",
-                "Change User Approval": "تغيير موافقة المستخدم"
-
+                "Change User Approval": "تغيير موافقة المستخدم",
+                "Switch Language": "تبديل اللغة"
             }
         }
         // Add more languages as needed
