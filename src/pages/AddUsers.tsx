@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 import Loader from '../common/Loader';
 import { LoaderIcon } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 type images = {
   url: File | string;
 };
@@ -28,6 +29,7 @@ const validationSchema = Yup.object().shape({
 
 function AddUsers() {
   const [loading, setisloading] = useState<boolean>(false);
+  const { t, i18n } = useTranslation();
   const formikObj = useFormik({
     validationSchema,
     initialValues: {
@@ -64,7 +66,7 @@ function AddUsers() {
 
   return (
     <FormikProvider value={formikObj}>
-      <h1 className="text-2xl my-5">User Information</h1>
+      <h1 className="text-2xl my-5">{t('User Information')}</h1>
 
       <form onSubmit={formikObj.handleSubmit}>
         {/* <div className="flex flex-col px-6.5 ">
@@ -127,7 +129,7 @@ function AddUsers() {
           <div className="flex flex-col md:flex-row md:space-x-4">
             <div className="w-full md:w-2/5">
               <label className="mb-3 block text-black dark:text-white">
-                User Email
+                {t('User Email')}
               </label>
               <Field
                 type="text"
@@ -146,7 +148,7 @@ function AddUsers() {
           <div className="flex space-x-4">
             <div className="w-full md:w-2/5">
               <label className="mb-3 block text-black dark:text-white">
-                Password
+                {t('Password')}
               </label>
               <Field
                 type="password"
@@ -163,7 +165,7 @@ function AddUsers() {
           </div>
           <div className="flex flex-col w-2/5">
             <label className="mb-3 block text-black dark:text-white">
-              User Roles
+              {t('User Roles')}
             </label>
             <div className="relative z-20 p-4 w-full rounded border border-stroke p-1.5 pr-8 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
               <div className="flex flex-wrap items-center">
@@ -214,37 +216,37 @@ function AddUsers() {
                 }}
               >
                 <option className="text-black" value="">
-                  Select
+                  {t('Select')}
                 </option>
                 <option className="text-black" value="User All">
-                  User All
+                  {t('User All')}
                 </option>
                 <option className="text-black" value="User Read">
-                  User Read
+                  {t('User Read')}
                 </option>
                 <option className="text-black" value="User Create">
-                  User Create
+                  {t('User Create')}
                 </option>
                 <option className="text-black" value="User Delete">
-                  User Delete
+                  {t('User Delete')}
                 </option>
                 <option className="text-black" value="User Update">
-                  User Update
+                  {t('User Update')}
                 </option>
                 <option className="text-black" value="Contract All">
-                  Contract All
+                  {t('Contract All')}
                 </option>
                 <option className="text-black" value="Contract Read">
-                  Contract Read
+                  {t('Contract Read')}
                 </option>
                 <option className="text-black" value="Contract Create">
-                  Contract Create
+                  {t('Contract Create')}
                 </option>
                 <option className="text-black" value="Contract Delete">
-                  Contract Delete
+                  {t('Contract Delete')}
                 </option>
                 <option className="text-black" value="Contract Update">
-                  Contract Update
+                  {t('Contract Update')}
                 </option>
               </Field>
               <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
@@ -277,7 +279,7 @@ function AddUsers() {
           className="w-52 rounded bg-primary p-3 font-medium text-gray"
           type="submit"
         >
-          {loading ? <LoaderIcon className="h-8 w-8 mx-auto" /> : 'Add User'}
+          {loading ? <LoaderIcon className="h-8 w-8 mx-auto" /> : t('Add User')}
         </button>
       </form>
     </FormikProvider>

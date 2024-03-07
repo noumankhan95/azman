@@ -15,6 +15,7 @@ import { type Timestamp } from 'firebase/firestore';
 import { db } from '../firebase.js';
 import { deleteUser } from 'firebase/auth';
 import useUserAuth from '../store/useUserAuth.js';
+import { useTranslation } from 'react-i18next';
 type AdminUser = { id: string; email: string };
 function AdminUsers() {
   const [showAlert, setshowAlert] = useState(false);
@@ -31,6 +32,7 @@ function AdminUsers() {
   const endIndex = startIndex + ItemsperPage;
   const currentItems = users.slice(startIndex, endIndex);
   const { role } = useUserAuth();
+  const { t } = useTranslation();
   const getUsers = useCallback(async () => {
     try {
       setisloading((p) => true);
@@ -58,7 +60,7 @@ function AdminUsers() {
   console.log(users, 'isers');
   return (
     <div className="w-full ">
-      <h1 className="text-2xl my-10">Approved Users</h1>
+      <h1 className="text-2xl my-10">{t('Approved Users')}</h1>
       {showAlert && (
         <div className="w-1/5 md:w-4/5 right-0 absolute flex bg-boxdark-2  border-l-6 border-[#F87171] z-50   px-7 py-8 shadow-md  md:p-9">
           <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg ">
@@ -80,7 +82,7 @@ function AdminUsers() {
           </div>
           <div className="w-full">
             <h5 className="mb-3 font-semibold text-[#B45454]">
-              Are You Sure You Want To Delete This Item
+              {t('Are You Sure You Want To Delete This Item')}
             </h5>
             <ul>
               <li
@@ -139,13 +141,13 @@ function AdminUsers() {
               </th> */}
               <th className="p-3 md:w-1/5 lg:w-1/4">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Email
+                  {t('Email')}
                 </h5>
               </th>
 
               <th className="p-3 md:w-1/5 lg:w-1/4">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Actions
+                  {t('Actions')}
                 </h5>
               </th>
             </tr>
@@ -188,7 +190,7 @@ function AdminUsers() {
                           setshowAlert(true);
                         }}
                       >
-                        Delete
+                        {t('Delete')}
                       </h5>
                     )}
                   </td>
@@ -232,9 +234,11 @@ function AdminUsers() {
                 </defs>
               </svg>
             </span>
-            Previous
+            {t('Previous')}
           </button>
-          <h2>Page {page}</h2>
+          <h2>
+            {t('Page')} {page}
+          </h2>
           <button
             className="inline-flex items-center justify-center gap-2.5 disabled:cursor-default rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 disabled:bg-body"
             disabled={page == totalPages}
@@ -266,7 +270,7 @@ function AdminUsers() {
                 </defs>
               </svg>
             </span>
-            Next
+            {t('Next')}
           </button>
         </div>
       </div>

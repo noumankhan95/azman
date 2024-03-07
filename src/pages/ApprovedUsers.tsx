@@ -15,6 +15,7 @@ import { type Timestamp } from 'firebase/firestore';
 // @ts-ignore
 import { db } from '../firebase.js';
 import useUserAuth from '../store/useUserAuth.js';
+import { useTranslation } from 'react-i18next';
 
 function ApprovedUsers() {
   const [showAlert, setshowAlert] = useState(false);
@@ -22,7 +23,7 @@ function ApprovedUsers() {
   const [loading, setisloading] = useState<boolean>(false);
   const [reload, setreload] = useState<boolean>(false);
   const [filterValue, setfilterValue] = useState<string>('');
-
+  const { i18n, t } = useTranslation();
   const [todelete, settodelete] = useState<{ id: string; email: string }>();
   const [isdeleting, setisdeleting] = useState<boolean>(false);
   const [users, setusers] = useState<WebsiteUsers[]>([]);
@@ -85,10 +86,10 @@ function ApprovedUsers() {
   }, [filterValue]);
   return (
     <div className="w-full overflow-x-auto">
-      <h1 className="text-2xl my-5">Approved Users</h1>
+      <h1 className="text-2xl my-5">{t('Approved Users')}</h1>
       <div className="flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-3/5 lg:justify-between lg:items-center lg:mb-25">
         <label className="mb-3 block text-black dark:text-white">
-          Filter By
+          {t('Filter by')}
         </label>
         <select
           name="type"
@@ -98,15 +99,15 @@ function ApprovedUsers() {
             setfilterValue(e.target.value!);
           }}
         >
-          <option value={''}>Select</option>
-          <option value={'User'}>User</option>
-          <option value={'Company'}>Company</option>
+          <option value={''}>{t('Select')}</option>
+          <option value={'User'}>{t('User')}</option>
+          <option value={'Company'}>{t('Company')}</option>
         </select>
         <button
           className="inline-flex items-center justify-center disabled:cursor-default rounded-md bg-success py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 disabled:bg-body"
           onClick={filterUsers}
         >
-          Filter
+          {t('Filter')}
         </button>
       </div>
       {showAlert && (
@@ -130,7 +131,7 @@ function ApprovedUsers() {
           </div>
           <div className="w-full">
             <h5 className="mb-3 font-semibold text-[#B45454]">
-              Are You Sure You Want To Delete This Item
+              {t('Are You Sure You Want To Delete This Item')}
             </h5>
             <ul>
               <li
@@ -188,27 +189,27 @@ function ApprovedUsers() {
             <tr className="grid rounded-sm w-full bg-gray-2 dark:bg-form-strokedark grid-cols-6 gap-4 md:gap-8">
               <th className="p-3 md:w-1/5 lg:w-1/4">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Name
+                  {t('Name')}
                 </h5>
               </th>
               <th className="p-3 md:w-1/5 lg:w-1/4">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Email
+                  {t('Email')}
                 </h5>
               </th>
               <th className="p-3 md:w-1/6 lg:w-1/8">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Phone
+                  {t('Phone')}
                 </h5>
               </th>
               <th className="p-3 md:w-1/6 lg:w-1/8">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  CNIC
+                  {t('CNIC')}
                 </h5>
               </th>
               <th className="p-3 md:w-1/5 lg:w-1/4">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Actions
+                  {t('Actions')}
                 </h5>
               </th>
             </tr>
@@ -260,7 +261,7 @@ function ApprovedUsers() {
                         navigate('/userDetails');
                       }}
                     >
-                      View Details
+                      {t('View Details')}
                     </h5>
                   </td>
                 </tr>
@@ -303,9 +304,11 @@ function ApprovedUsers() {
                 </defs>
               </svg>
             </span>
-            Previous
+            {t('Previous')}
           </button>
-          <h2>Page {page}</h2>
+          <h2>
+            {t('Page')} {page}
+          </h2>
           <button
             className="inline-flex items-center justify-center gap-2.5 disabled:cursor-default rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 disabled:bg-body"
             disabled={page == totalPages}
@@ -337,7 +340,7 @@ function ApprovedUsers() {
                 </defs>
               </svg>
             </span>
-            Next
+            {t('Next')}
           </button>
         </div>
       </div>

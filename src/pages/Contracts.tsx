@@ -9,6 +9,7 @@ import { toast } from 'react-hot-toast';
 import { ref } from 'firebase/database';
 import useContract from '../store/useContract';
 import useUserAuth from '../store/useUserAuth';
+import { useTranslation } from 'react-i18next';
 const Contracts = () => {
   const [isloading, setisloading] = useState<boolean>(false);
   const [isdeleting, setisdeleting] = useState<boolean>(false);
@@ -17,6 +18,7 @@ const Contracts = () => {
   const [showAlert, setshowAlert] = useState(false);
   const [contracts, setcontracts] = useState<Contract[]>([]);
   const { role } = useUserAuth();
+  const { t } = useTranslation();
   const {
     setisEditing,
     addToDb,
@@ -73,7 +75,7 @@ const Contracts = () => {
           </div>
           <div className="w-full">
             <h5 className="mb-3 font-semibold text-[#B45454]">
-              Are You Sure You Want To Delete This Item
+              {t('Are You Sure You Want To Delete This Item')}
             </h5>
             <ul>
               <li
@@ -118,7 +120,7 @@ const Contracts = () => {
               navigate('/addContract');
             }}
           >
-            Create
+            {t('Create')}
           </button>
         )}
       </div>
@@ -127,11 +129,11 @@ const Contracts = () => {
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Contract Title
+                {t('Contract Title')}
               </th>
 
               <th className="py-4 px-4 font-medium text-black dark:text-white">
-                Actions
+                {t('Actions')}
               </th>
             </tr>
           </thead>

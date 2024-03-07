@@ -17,9 +17,10 @@ import { toast } from 'react-toastify';
 import html2pdf from 'html2pdf.js';
 //@ts-ignore
 import { db } from '../firebase.js';
-import  ReactQuill from 'react-quill';
+import ReactQuill from 'react-quill';
 import { addDoc, collection } from 'firebase/firestore';
 import useContract from '../store/useContract.js';
+import { useTranslation } from 'react-i18next';
 type images = {
   url: File | string;
 };
@@ -85,6 +86,7 @@ const validationSchema = yup.object().shape({
 
 function AddContract() {
   const [isloading, setisloading] = useState<boolean>(false);
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const quillRef = useRef<any>(null);
   const { contract, updateIndb, addToDb, isEditing, resetContract } =
@@ -375,7 +377,7 @@ function AddContract() {
   return (
     <FormikProvider value={formikObj}>
       <div className="flex flex-col gap-5.5 p-6.5">
-        <h1>Contract Information</h1>
+        <h1>{t('Contract Information')}</h1>
         <form
           onSubmit={formikObj.handleSubmit}
           className="flex flex-col gap-5.5 p-6.5"
@@ -383,7 +385,7 @@ function AddContract() {
           <div className="flex space-x-4">
             <div className="w-full md:w-2/5">
               <label className="mb-3 block text-black dark:text-white">
-                Contract Name
+                {t('Contract Name')}
               </label>
               <Field
                 type="text"
@@ -399,17 +401,17 @@ function AddContract() {
             </div>
             <div className="w-full md:w-2/5">
               <label className="mb-3 block text-black dark:text-white">
-                Contract Type
+                {t('Contract Type')}
               </label>
               <Field
                 as="select"
                 name="type"
                 className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
               >
-                <option>Select</option>
-                <option value={'Rental'}>Rental</option>
-                <option value={'Selling'}>Selling</option>
-                <option value={'Installment'}>Installment</option>
+                <option>{t('Select')}</option>
+                <option value={'Rental'}>{t('Rental')}</option>
+                <option value={'Selling'}>{t('Selling')}</option>
+                <option value={'Installment'}>{t('Installment')}</option>
               </Field>
               <ErrorMessage
                 name="type"
@@ -631,7 +633,7 @@ function AddContract() {
               </svg>
             </div>
           )} */}
-          <h1>Questions</h1>
+          <h1>{t('Questions')}</h1>
           <div className="flex flex-col">
             {formikObj.values.questions?.map((d, index) => (
               <div
@@ -640,7 +642,7 @@ function AddContract() {
               >
                 <div className="w-full md:w-2/5 ">
                   <label className="mb-3 block text-black dark:text-white">
-                    Question {index + 1}
+                    {t('Question')} {index + 1}
                   </label>
                   <Field
                     type="text"
@@ -697,7 +699,7 @@ function AddContract() {
           </div>
           <div className="overflow-hidden rounded-sm border border-strokeshadow-default dark:border-strokedark my-5 dark:bg-boxdark">
             <div className="px-4 py-5 pb-6 text-center lg:pb-8 xl:pb-11.5">
-              <h1>Choose Image</h1>
+              <h1>{t('Choose Image')}</h1>
               <div className="relative z-30 mx-auto  h-30 w-full max-w-30 rounded-full p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
                 <div className="relative drop-shadow-2">
                   <svg
@@ -1055,7 +1057,7 @@ function AddContract() {
                 </div> */}
               </div>
 
-              <h3 className="text-2xl dark:text-white my-10">Preview</h3>
+              <h3 className="text-2xl dark:text-white my-10">{t('Preview')}</h3>
 
               <div className="border-2 border-solid border-dark dark:border-white px-4 py-3">
                 <section ref={contentRef}>
@@ -1072,7 +1074,7 @@ function AddContract() {
               </div>
 
               <button onClick={handleGetText} className="underline my-10">
-                Download
+                {t('Download')}
               </button>
             </div>
           </>
@@ -1083,9 +1085,9 @@ function AddContract() {
             {isloading ? (
               <LoaderIcon style={{ height: 30, width: 30, margin: 'auto' }} />
             ) : isEditing.value ? (
-              'Update'
+              t('Update')
             ) : (
-              'Save'
+              t('Save')
             )}
           </button>
         </form>

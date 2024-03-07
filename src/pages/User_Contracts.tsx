@@ -17,6 +17,7 @@ import { ref } from 'firebase/database';
 import useContract from '../store/useContract';
 import useUserAuth from '../store/useUserAuth';
 import useUserContract from '../store/useUserContract';
+import { useTranslation } from 'react-i18next';
 const UserContracts = () => {
   const [isloading, setisloading] = useState<boolean>(false);
   const [reload, setreload] = useState<boolean>(false);
@@ -58,11 +59,7 @@ const UserContracts = () => {
       const qs = await getDocs(
         query(
           collection(db, 'user_contracts'),
-          where(
-            filterValue,
-            '==',
-            filterRef.current?.value!,
-          ),
+          where(filterValue, '==', filterRef.current?.value!),
         ),
       );
       const catarray: UserContract[] = [];
@@ -84,11 +81,12 @@ const UserContracts = () => {
   useEffect(() => {
     getContracts();
   }, [reload]);
+  const { t } = useTranslation();
   return (
     <div>
       <div className="flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-4/5 space-x-4  lg:justify-between lg:items-center lg:mb-25">
         <label className="mb-3 block text-black dark:text-white">
-          Filter By
+          {t('Filter By')}
         </label>
         <select
           name="type"
@@ -97,9 +95,9 @@ const UserContracts = () => {
             setfilterValue(e.target.value!);
           }}
         >
-          <option value={''}>Select</option>
-          <option value={'contracteeMembershipID'}>Membership Id</option>
-          <option value={'baseContractType'}>Contract Type</option>
+          <option value={''}>{t('Select')}</option>
+          <option value={'contracteeMembershipID'}>{t('Membership Id')}</option>
+          <option value={'baseContractType'}>{t('Contract Type')}</option>
         </select>
         {filterValue && (
           <input
@@ -112,7 +110,7 @@ const UserContracts = () => {
           className="inline-flex items-center justify-center disabled:cursor-default rounded-md bg-success py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 disabled:bg-body"
           onClick={filterUsers}
         >
-          Filter
+          {t('Filter')}
         </button>
       </div>
       <div className="max-w-full overflow-x-auto">
@@ -120,19 +118,19 @@ const UserContracts = () => {
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Contractee Id
+                {t('Contractee Id')}
               </th>
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Contractee Name
+                {t('Contractee Name')}
               </th>
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Contractee Email
+                {t('Contractee Email')}
               </th>
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Contractee Phone
+                {t('Contractee Phone')}
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
-                Actions
+                {t('Actions')}
               </th>
             </tr>
           </thead>
@@ -170,7 +168,7 @@ const UserContracts = () => {
                           navigate('/userContractDetails');
                         }}
                       >
-                        View Details
+                        {t('View Details')}
                       </div>
                     </td>
                   </tr>

@@ -4,6 +4,7 @@ import DarkModeSwitcher from './DarkModeSwitcher';
 import DropdownMessage from './DropdownMessage';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -97,10 +98,11 @@ const Header = (props: {
           </form>
         </div> */}
 
-        <div className="flex items-center gap-3 2xsm:gap-7">
-          <ul className="flex items-end gap-2 2xsm:gap-4">
+        <div className="flex items-center gap-3 2xsm:gap-7 w-full">
+          <ul className="flex items-end gap-2 2xsm:gap-4 justify-between w-3/5">
             {/* <!-- Dark Mode Toggler --> */}
             <DarkModeSwitcher />
+            <LanguageSwitcher />
             {/* <!-- Dark Mode Toggler --> */}
 
             {/* <!-- Notification Menu Area --> */}

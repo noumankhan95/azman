@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import { LoaderIcon } from 'react-hot-toast';
 import DynamicFirebaseImageComponent from '../components/DynamicFirebaseImageComponent.js';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { useTranslation } from 'react-i18next';
 type images = {
   url: File | string;
 };
@@ -43,7 +44,7 @@ const Settings = () => {
   const [reload, setreload] = useState<boolean>(false);
   const [shouldUpdate, setshouldUpdate] = useState<boolean>(false);
   const [images, setimages] = useState<images[]>([]);
-  
+  const { t } = useTranslation();
   const formikobj = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -223,7 +224,7 @@ const Settings = () => {
           >
             <div className="w-full md:w-2/5 ">
               <label className="mb-3 block text-black dark:text-white">
-                From
+                {t('From')}
               </label>
               <Field
                 type="number"
@@ -239,7 +240,7 @@ const Settings = () => {
             </div>
             <div className="w-full md:w-2/5">
               <label className="mb-3 block text-black dark:text-white">
-                To
+                {t('To')}
               </label>
               <Field
                 type="number"
@@ -256,7 +257,7 @@ const Settings = () => {
 
             <div className="w-full md:w-2/5">
               <label className="mb-3 block text-black dark:text-white">
-                Price
+                {t('Price')}
               </label>
               <Field
                 type="number"
@@ -343,7 +344,7 @@ const Settings = () => {
         </div>
         <div className="w-full md:w-2/5">
           <label className="mb-3 block text-black dark:text-white">
-            App Price
+            {t('App Price')}
           </label>
           <Field
             type="number"
@@ -359,7 +360,7 @@ const Settings = () => {
         </div>
         <div className="overflow-hidden rounded-sm border border-strokeshadow-default dark:border-strokedark my-5 dark:bg-boxdark">
           <div className="px-4 py-5 pb-6 text-center lg:pb-8 xl:pb-11.5">
-            <h1>Choose Image</h1>
+            <h1>{t('Choose Image')}</h1>
             <div className="relative z-30 mx-auto  h-30 w-full max-w-30 rounded-full p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
               <div className="relative drop-shadow-2">
                 <svg
@@ -448,9 +449,9 @@ const Settings = () => {
           {isloading ? (
             <LoaderIcon style={{ height: 30, width: 30, margin: 'auto' }} />
           ) : shouldUpdate ? (
-            'Update'
+            t('Update')
           ) : (
-            'Save'
+            t('Save')
           )}
         </button>
       </form>

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { LoaderIcon } from 'react-hot-toast';
 import useUserAuth from '../store/useUserAuth.js';
 import DynamicFirebaseImageComponent from '../components/DynamicFirebaseImageComponent.js';
+import { useTranslation } from 'react-i18next';
 type Orders = {
   id: string;
   orderNumber: string;
@@ -66,16 +67,19 @@ function UserDetails() {
   };
   console.log(user);
   const removeImage = useCallback(() => {}, []);
+  const { t } = useTranslation();
   return (
     <div>
-      <h1 className="text-4xl text-black dark:text-white">User Details</h1>
+      <h1 className="text-4xl text-black dark:text-white">
+        {t('User Details')}
+      </h1>
       <div className="flex flex-col gap-5.5 p-6.5">
         {/* <h1 className="text-2xl text-black dark:text-white">
           Placed <OrderTimeAgo orderTimestamp={order.appointmentDate} />
         </h1> */}
         <div className="flex flex-col lg:flex-row lg:justify-between">
           <h1 className="text-xl text-black dark:text-white">
-            Name : {user.name}
+            {t('Name')} : {user.name}
           </h1>
           <h1 className="text-2xl lg:text-3xl text-black dark:text-meta-8">
             {user.email}
@@ -86,7 +90,7 @@ function UserDetails() {
         <div className=" mb-7.5 flex flex-wrap gap-5 xl:gap-7.5">
           <div className=" space-y-4 lg:space-y-0 flex flex-col lg:flex-row lg:items-center lg:justify-between w-full">
             <div>
-              <h1>User Status</h1>
+              <h1>{t('User Status')}</h1>
               <div className="inline-flex items-center justify-center gap-2.5 rounded-md bg-meta-3 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
                 {user.status || 'Pending'}
               </div>
@@ -96,7 +100,7 @@ function UserDetails() {
               <>
                 {' '}
                 <div>
-                  <h1>Change User Status</h1>
+                  <h1>{t('Change User Status')}</h1>
                   <div className="relative z-20 p-1 w-full rounded border border-stroke pr-8 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
                     <select
                       className="top-0 left-0 z-20 h-full w-full outline-none bg-transparent appearance-none cursor-pointer"
@@ -111,19 +115,19 @@ function UserDetails() {
                         disabled
                         hidden
                       >
-                        Select
+                        {t('Select')}
                       </option>
                       <option
                         className="text-black px-5 my-5"
                         value={'Blocked'}
                       >
-                        Blocked
+                        {t('Blocked')}
                       </option>
                       <option
                         className="text-black px-5 my-5"
                         value={'Unblocked'}
                       >
-                        Unblocked
+                        {t('Unblocked')}
                       </option>
                     </select>
                     <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2 pointer-events-none">
@@ -154,7 +158,7 @@ function UserDetails() {
                   {statusisloading ? (
                     <LoaderIcon className="w-6 h-6" />
                   ) : (
-                    'Change Status'
+                    t('Change Status')
                   )}
                 </button>
               </>
@@ -164,16 +168,16 @@ function UserDetails() {
         <div className="mb-7.5 flex flex-wrap gap-5 xl:gap-7.5">
           <div className=" space-y-4 lg:space-y-0 flex flex-col lg:flex-row lg:items-center lg:justify-between w-full">
             <div>
-              <h1>User Approval</h1>
+              <h1>{t('User Approval')}</h1>
               <div className="inline-flex items-center justify-center gap-2.5 rounded-md bg-meta-3 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
-                {user.approval || 'Pending'}
+                {user.approval || t('Pending')}
               </div>
             </div>
             {(user.role?.includes('User All') ||
               user.role?.includes('User Update')) && (
               <>
                 <div>
-                  <h1>Change User Approval</h1>
+                  <h1>{t('Change User Approval')}</h1>
                   <div className="relative z-20 p-1 w-full rounded border border-stroke pr-8 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
                     <select
                       className="top-0 left-0 z-20 h-full w-full outline-none bg-transparent appearance-none cursor-pointer"
@@ -188,25 +192,25 @@ function UserDetails() {
                         disabled
                         hidden
                       >
-                        Select
+                        {t('Select')}
                       </option>
                       <option
                         className="text-black px-5 my-5"
                         value={'Pending'}
                       >
-                        Pending
+                        {t('Pending')}
                       </option>
                       <option
                         className="text-black px-5 my-5"
                         value={'Approved'}
                       >
-                        Approved
+                        {t('Approved')}
                       </option>
                       <option
                         className="text-black px-5 my-5"
                         value={'Disapproved'}
                       >
-                        Disapproved
+                        {t('Disapproved')}
                       </option>
                     </select>
                     <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2 pointer-events-none">
@@ -237,7 +241,7 @@ function UserDetails() {
                   {isloading ? (
                     <LoaderIcon className="w-6 h-6" />
                   ) : (
-                    'Change Approval'
+                    t('Change Approval')
                   )}
                 </button>
               </>
@@ -248,7 +252,7 @@ function UserDetails() {
         <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 justify-start">
           <div className="w-full md:w-2/5">
             <h1 className="mb-3 block text-black dark:text-bodydark">
-              Customer Name
+              {t('Customer Name')}
             </h1>
             <h2 className="mb-3 block text-black dark:text-white">
               {user.name}
@@ -256,7 +260,7 @@ function UserDetails() {
           </div>
           <div className="w-full md:w-2/5">
             <h1 className="mb-3 block text-black dark:text-bodydark">
-              Customer Number
+              {t('Customer Number')}
             </h1>
             <h2 className="mb-3 block text-black dark:text-white">
               {user.phoneNo}
@@ -264,7 +268,7 @@ function UserDetails() {
           </div>
           <div className="w-full md:w-2/5">
             <h1 className="mb-3 block text-black dark:text-bodydark">
-              AlDolat
+              {t('AlDolat')}
             </h1>
             <h2 className="mb-3 block text-black dark:text-white">
               {user.aldolat}
@@ -274,7 +278,7 @@ function UserDetails() {
         <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 justify-start">
           <div className="w-full md:w-2/5">
             <h1 className="mb-3 block text-black dark:text-bodydark">
-              Almadina
+              {t('Almadina')}
             </h1>
             <h1 className="mb-3 block text-black dark:text-white">
               {user.almadina}
@@ -282,7 +286,7 @@ function UserDetails() {
           </div>
           <div className="w-full md:w-2/5">
             <h1 className="mb-3 block text-black dark:text-bodydark">
-              Almontaqatha
+              {t('Almontaqatha')}
             </h1>
             <h1 className="mb-3 block text-black dark:text-white">
               {user.almontaqatha}
@@ -300,13 +304,13 @@ function UserDetails() {
         {user.capacity && user.capacity === 'Company' && (
           <>
             <h1 className="text-4xl text-black dark:text-white">
-              Company Details
+              {t('Company Details')}
             </h1>
 
             <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 justify-start">
               <div className="w-full md:w-2/5">
                 <h1 className="mb-3 block text-black dark:text-bodydark">
-                  Wakeel Name
+                  {t('Wakeel Name')}
                 </h1>
                 <h1 className="mb-3 block text-black dark:text-white">
                   {user.wakeelName}
@@ -314,7 +318,7 @@ function UserDetails() {
               </div>
               <div className="w-full md:w-2/5">
                 <h1 className="mb-3 block text-black dark:text-bodydark">
-                  Wakeel PNO
+                  {t('Wakeel PNO')}
                 </h1>
                 <h1 className="mb-3 block text-black dark:text-white">
                   {user.wakeelPNO}
@@ -322,7 +326,7 @@ function UserDetails() {
               </div>
               <div className="w-full md:w-2/5">
                 <h1 className="mb-3 block text-black dark:text-bodydark">
-                  Wakeel Cnic
+                  {t('Wakeel Cnic')}
                 </h1>
                 <h1 className="mb-3 block text-black dark:text-white">
                   {user.wakeelCNIC}
@@ -332,7 +336,7 @@ function UserDetails() {
             <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 justify-start">
               <div className="w-full md:w-2/5">
                 <h1 className="mb-3 block text-black dark:text-bodydark">
-                  Wakeel Description
+                  {t('Wakeel Description')}
                 </h1>
                 <h1 className="mb-3 block text-black dark:text-white">
                   {user.wakeelDescription}
@@ -340,7 +344,7 @@ function UserDetails() {
               </div>
               <div className="w-full md:w-2/5">
                 <h1 className="mb-3 block text-black dark:text-bodydark">
-                  Wakeel Date
+                  {t('Wakeel Date')}
                 </h1>
                 <h1 className="mb-3 block text-black dark:text-white">
                   {user.wakeelDate}
@@ -351,7 +355,7 @@ function UserDetails() {
               {user.wakeelAttachedFile1 && (
                 <div className="w-full md:w-2/5">
                   <h1 className="mb-3 block text-black dark:text-bodydark">
-                    Attachment 1
+                    {t('Attachment')} 1
                   </h1>
                   <h1 className="mb-3 block text-black dark:text-white">
                     <DynamicFirebaseImageComponent
@@ -364,7 +368,7 @@ function UserDetails() {
               {user.wakeelAttachedFile2 && (
                 <div className="w-full md:w-2/5">
                   <h1 className="mb-3 block text-black dark:text-bodydark">
-                    Attachment 2
+                    {t('Attachment')} 2
                   </h1>
                   <h1 className="mb-3 block text-black dark:text-white">
                     <DynamicFirebaseImageComponent

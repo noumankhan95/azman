@@ -16,7 +16,7 @@ import { type Timestamp } from 'firebase/firestore';
 import { db } from '../firebase.js';
 import useUserAuth from '../store/useUserAuth.js';
 import { toast } from 'react-toastify';
-
+import { useTranslation } from 'react-i18next';
 function NewUsers() {
   const [showAlert, setshowAlert] = useState(false);
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ function NewUsers() {
   const [isdeleting, setisdeleting] = useState<boolean>(false);
   const [users, setusers] = useState<WebsiteUsers[]>([]);
   const { setuser } = useUserAuth();
-
+  const { t, i18n } = useTranslation();
   const [approval, setapproval] = useState<{ status: boolean; id: string }>({
     id: '',
     status: false,
@@ -38,7 +38,6 @@ function NewUsers() {
   const endIndex = startIndex + ItemsperPage;
   const currentItems = users.slice(startIndex, endIndex);
   const [filterValue, setfilterValue] = useState<string>('');
-
   const filterUsers = useCallback(async () => {
     try {
       if (!filterValue) return toast.error('Select Filter Type First');
@@ -108,12 +107,20 @@ function NewUsers() {
   }, []);
   return (
     <div className="w-full overflow-x-auto">
-      <h1 className="text-2xl my-10">New Users</h1>
-      <h1 className="text-2xl my-10">Pending New Users : {users.length}</h1>
+      <h1 className="text-2xl my-10">
+        {i18n.language === 'ar' ? t('New Users') : 'New Users'}
+      </h1>
+      <h1 className="text-2xl my-10">
+        {' '}
+        {i18n.language === 'ar'
+          ? t('Pending New Users')
+          : 'Pending New Users'}{' '}
+        : {users.length}
+      </h1>
 
       <div className="flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-3/5 lg:justify-between lg:items-center lg:mb-25">
         <label className="mb-3 block text-black dark:text-white">
-          Filter By
+          {i18n.language === 'ar' ? t('Filter by') : 'Filter by'}{' '}
         </label>
         <select
           name="type"
@@ -123,15 +130,15 @@ function NewUsers() {
             setfilterValue(e.target.value!);
           }}
         >
-          <option value={''}>Select</option>
-          <option value={'User'}>User</option>
-          <option value={'Company'}>Company</option>
+          <option value={''}>{t('Select')}</option>
+          <option value={'User'}>{t('User')}</option>
+          <option value={'Company'}>{t('Company')}</option>
         </select>
         <button
           className="inline-flex items-center justify-center disabled:cursor-default rounded-md bg-success py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 disabled:bg-body"
           onClick={filterUsers}
         >
-          Filter
+          {i18n.language === 'ar' ? t('Filter') : 'Filter'}
         </button>
       </div>
       {showAlert && (
@@ -155,7 +162,7 @@ function NewUsers() {
           </div>
           <div className="w-full">
             <h5 className="mb-3 font-semibold text-[#B45454]">
-              Are You Sure You Want To Delete This Item
+              {t('Are You Sure You Want To Delete This Item')}
             </h5>
             <ul>
               <li
@@ -227,32 +234,32 @@ function NewUsers() {
             <tr className="grid rounded-sm w-full bg-gray-2 dark:bg-form-strokedark grid-cols-6 gap-4 md:gap-8">
               <th className="p-3">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Name
+                  {t('Name')}
                 </h5>
               </th>
               <th className="p-3 text-start">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Email
+                  {t('Email')}
                 </h5>
               </th>
               <th className="p-3 text-start">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Phone
+                  {t('Phone')}
                 </h5>
               </th>
               <th className="p-3 text-start">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  CNIC
+                  {t('CNIC')}
                 </h5>
               </th>
               <th className="p-3 text-start">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Actions
+                  {t('Actions')}
                 </h5>
               </th>
               <th className="p-3 text-start">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
-                  Approval
+                  {t('Approval')}
                 </h5>
               </th>
             </tr>
@@ -303,7 +310,7 @@ function NewUsers() {
                         navigate('/userDetails');
                       }}
                     >
-                      View Details
+                      {t('View Details')}
                     </h5>
                   </td>
                   <td className="p-3 text-start flex">
@@ -411,9 +418,11 @@ function NewUsers() {
                 </defs>
               </svg>
             </span>
-            Previous
+            {t('Previous')}
           </button>
-          <h2>Page {page}</h2>
+          <h2>
+            {t('Page')} {page}
+          </h2>
           <button
             className="inline-flex items-center justify-center   disabled:bg-body gap-2.5 disabled:cursor-default rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
             disabled={page == totalPages}
@@ -445,7 +454,7 @@ function NewUsers() {
                 </defs>
               </svg>
             </span>
-            Next
+            {t('Next')}
           </button>
         </div>
       </div>

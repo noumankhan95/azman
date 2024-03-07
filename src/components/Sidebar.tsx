@@ -6,6 +6,7 @@ import { signOut } from 'firebase/auth';
 //@ts-ignore
 import { auth } from '../firebase.js';
 import useUserAuth from '../store/useUserAuth.js';
+import { useTranslation } from 'react-i18next';
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -58,7 +59,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       document.querySelector('body')?.classList.remove('sidebar-expanded');
     }
   }, [sidebarExpanded]);
-
+  const { t } = useTranslation();
   return (
     <aside
       ref={sidebar}
@@ -102,7 +103,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {/* <!-- Menu Group --> */}
           <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-              MENU
+              {t('MENU')}
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
@@ -402,7 +403,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         ></path>{' '}
                       </g>
                     </svg>
-                    New Users
+                    {t('New Users')}
                   </NavLink>
                 </li>
               )}
@@ -441,7 +442,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         ></path>{' '}
                       </g>
                     </svg>
-                    Approved Users
+                    {t('Approved Users')}
                   </NavLink>
                 </li>
               )}
@@ -486,7 +487,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         </path>{' '}
                       </g>
                     </svg>
-                    Add Users
+                    {t('Add Users')}
                   </NavLink>
                 </li>
               )}
@@ -529,7 +530,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         ></path>
                       </g>
                     </svg>
-                    Contracts
+                    {t('Contracts')}
                   </NavLink>
                 </li>
               )}
@@ -569,7 +570,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         ></path>
                       </g>
                     </svg>
-                    User Contracts
+                    {t('User Contracts')}
                   </NavLink>
                 </li>
               )}
@@ -649,7 +650,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         ></path>
                       </g>
                     </svg>
-                    Admin Users
+                    {t('Admin Users')}
                   </NavLink>
                 </li>
               )}
@@ -693,7 +694,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         ></path>{' '}
                       </g>
                     </svg>
-                    Settings
+                    {t('Settings')}
                   </NavLink>
                 </li>
               )}
@@ -909,7 +910,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             ></path>{' '}
                           </g>
                         </svg>
-                        Logout
+                        {t('Logout')}
                       </li>
                       {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>
