@@ -105,6 +105,7 @@ function NewUsers() {
       setapproval((p) => ({ id: '', status: false }));
     }
   }, []);
+
   return (
     <div className="w-full overflow-x-auto">
       <h1 className="text-2xl my-10">
@@ -118,7 +119,11 @@ function NewUsers() {
         : {users.length}
       </h1>
 
-      <div className="flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-3/5 lg:justify-between lg:items-center lg:mb-25">
+      <div
+        className={`flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-3/5 lg:justify-between lg:items-center lg:mb-25 ${
+          i18n.language == 'ar' && 'lg:flex-row-reverse'
+        }`}
+      >
         <label className="mb-3 block text-black dark:text-white">
           {i18n.language === 'ar' ? t('Filter by') : 'Filter by'}{' '}
         </label>
@@ -228,10 +233,15 @@ function NewUsers() {
           </button>
         )}
       </div> */}
-      <div className="flex flex-col my-4 overflow-x-auto min-w-max">
+      <div>
         <table className="w-full">
           <thead>
-            <tr className="grid rounded-sm w-full bg-gray-2 dark:bg-form-strokedark grid-cols-6 gap-4 md:gap-8">
+            <tr
+              style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+              className={`grid rounded-sm w-full ${
+                i18n.language == 'ar' ? 'direct' : 'grid-flow-col'
+              } grid-cols-6 gap-4 md:gap-8 bg-gray-2 dark:bg-form-strokedark`}
+            >
               <th className="p-3">
                 <h5 className="text-sm font-medium uppercase xsm:text-base whitespace-normal">
                   {t('Name')}
@@ -279,6 +289,7 @@ function NewUsers() {
               currentItems &&
               currentItems.map((u) => (
                 <tr
+                  style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
                   className="grid w-full rounded-sm bg-gray-2 dark:bg-meta-4 grid-cols-6  items-start"
                   key={u.uid}
                 >

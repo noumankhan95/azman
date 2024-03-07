@@ -73,7 +73,7 @@ function AddUsers() {
 
           <div className="flex flex-col items-start space-y-4  justify-around">
             <div className="w-full md:w-2/5">
-              <label className="mb-3 block text-black dark:text-white">
+              <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar" && "text-end"}`}>
                 Name
               </label>
               <Field
@@ -89,7 +89,7 @@ function AddUsers() {
               />
             </div>
             <div className="w-full md:w-2/5">
-              <label className="mb-3 block text-black dark:text-white">
+              <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar" && "text-end"}`}>
                 الاسم
               </label>
               <Field
@@ -110,7 +110,7 @@ function AddUsers() {
         <div className="flex flex-col gap-5.5 p-6.5">
           {/* <div className="flex space-x-4">
             <div className="w-full md:w-2/5">
-              <label className="mb-3 block text-black dark:text-white">
+              <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar" && "text-end"}`}>
                 Phone
               </label>
               <Field
@@ -128,7 +128,11 @@ function AddUsers() {
           </div> */}
           <div className="flex flex-col md:flex-row md:space-x-4">
             <div className="w-full md:w-2/5">
-              <label className="mb-3 block text-black dark:text-white">
+              <label
+                className={`mb-3 block text-black dark:text-white ${
+                  i18n.language == 'ar' && 'text-end'
+                }`}
+              >
                 {t('User Email')}
               </label>
               <Field
@@ -147,7 +151,11 @@ function AddUsers() {
 
           <div className="flex space-x-4">
             <div className="w-full md:w-2/5">
-              <label className="mb-3 block text-black dark:text-white">
+              <label
+                className={`mb-3 block text-black dark:text-white ${
+                  i18n.language == 'ar' && 'text-end'
+                }`}
+              >
                 {t('Password')}
               </label>
               <Field
@@ -164,7 +172,11 @@ function AddUsers() {
             </div>
           </div>
           <div className="flex flex-col w-2/5">
-            <label className="mb-3 block text-black dark:text-white">
+            <label
+              className={`mb-3 block text-black dark:text-white ${
+                i18n.language == 'ar' && 'text-end'
+              }`}
+            >
               {t('User Roles')}
             </label>
             <div className="relative z-20 p-4 w-full rounded border border-stroke p-1.5 pr-8 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">

@@ -86,7 +86,7 @@ const validationSchema = yup.object().shape({
 
 function AddContract() {
   const [isloading, setisloading] = useState<boolean>(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const quillRef = useRef<any>(null);
   const { contract, updateIndb, addToDb, isEditing, resetContract } =
@@ -384,7 +384,11 @@ function AddContract() {
         >
           <div className="flex space-x-4">
             <div className="w-full md:w-2/5">
-              <label className="mb-3 block text-black dark:text-white">
+              <label
+                className={`mb-3 block text-black dark:text-white ${
+                  i18n.language == 'ar' && 'text-end'
+                }`}
+              >
                 {t('Contract Name')}
               </label>
               <Field
@@ -400,7 +404,11 @@ function AddContract() {
               />
             </div>
             <div className="w-full md:w-2/5">
-              <label className="mb-3 block text-black dark:text-white">
+              <label
+                className={`mb-3 block text-black dark:text-white ${
+                  i18n.language == 'ar' && 'text-end'
+                }`}
+              >
                 {t('Contract Type')}
               </label>
               <Field
@@ -428,7 +436,7 @@ function AddContract() {
                   key={index}
                 >
                   <div className="w-full md:w-2/5 ">
-                    <label className="mb-3 block text-black dark:text-white">
+                    <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar"&&"text-end"}`}>
                       From
                     </label>
                     <Field
@@ -444,7 +452,7 @@ function AddContract() {
                     />
                   </div>
                   <div className="w-full md:w-2/5">
-                    <label className="mb-3 block text-black dark:text-white">
+                    <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar"&&"text-end"}`}>
                       To
                     </label>
                     <Field
@@ -460,7 +468,7 @@ function AddContract() {
                     />
                   </div>
                   <div className="w-full md:w-2/5">
-                    <label className="mb-3 block text-black dark:text-white">
+                    <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar"&&"text-end"}`}>
                       Price
                     </label>
                     <Field
@@ -483,7 +491,7 @@ function AddContract() {
                   key={index}
                 >
                   <div className="w-full md:w-2/5 ">
-                    <label className="mb-3 block text-black dark:text-white">
+                    <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar"&&"text-end"}`}>
                       From
                     </label>
                     <Field
@@ -499,7 +507,7 @@ function AddContract() {
                     />
                   </div>
                   <div className="w-full md:w-2/5">
-                    <label className="mb-3 block text-black dark:text-white">
+                    <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar"&&"text-end"}`}>
                       To
                     </label>
                     <Field
@@ -515,7 +523,7 @@ function AddContract() {
                     />
                   </div>
                   <div className="w-full md:w-2/5">
-                    <label className="mb-3 block text-black dark:text-white">
+                    <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar"&&"text-end"}`}>
                       No Of Installments
                     </label>
                     <Field
@@ -530,7 +538,7 @@ function AddContract() {
                     />
                   </div>
                   <div className="w-full md:w-2/5">
-                    <label className="mb-3 block text-black dark:text-white">
+                    <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar"&&"text-end"}`}>
                       Downpayment
                     </label>
                     <Field
@@ -546,7 +554,7 @@ function AddContract() {
                     />
                   </div>
                   <div className="w-full md:w-2/5">
-                    <label className="mb-3 block text-black dark:text-white">
+                    <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar"&&"text-end"}`}>
                       Price
                     </label>
                     <Field
@@ -566,7 +574,7 @@ function AddContract() {
             {formikObj.values.type === 'Selling' && (
               <div className="w-full flex flex-col lg:flex-row lg:space-x-5 my-3 ">
                 <div className="w-full md:w-2/5">
-                  <label className="mb-3 block text-black dark:text-white">
+                  <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar"&&"text-end"}`}>
                     Price
                   </label>
                   <Field
@@ -641,7 +649,11 @@ function AddContract() {
                 key={index}
               >
                 <div className="w-full md:w-2/5 ">
-                  <label className="mb-3 block text-black dark:text-white">
+                  <label
+                    className={`mb-3 block text-black dark:text-white ${
+                      i18n.language == 'ar' && 'text-end'
+                    }`}
+                  >
                     {t('Question')} {index + 1}
                   </label>
                   <Field
@@ -1057,7 +1069,13 @@ function AddContract() {
                 </div> */}
               </div>
 
-              <h3 className="text-2xl dark:text-white my-10">{t('Preview')}</h3>
+              <h3
+                className={`text-2xl dark:text-white my-10 ${
+                  i18n.language == 'ar' && 'text-end'
+                }`}
+              >
+                {t('Preview')}
+              </h3>
 
               <div className="border-2 border-solid border-dark dark:border-white px-4 py-3">
                 <section ref={contentRef}>

@@ -44,7 +44,7 @@ const Settings = () => {
   const [reload, setreload] = useState<boolean>(false);
   const [shouldUpdate, setshouldUpdate] = useState<boolean>(false);
   const [images, setimages] = useState<images[]>([]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const formikobj = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -223,7 +223,11 @@ const Settings = () => {
             key={index}
           >
             <div className="w-full md:w-2/5 ">
-              <label className="mb-3 block text-black dark:text-white">
+              <label
+                className={`mb-3 block text-black dark:text-white ${
+                  i18n.language == 'ar' && 'text-end'
+                }`}
+              >
                 {t('From')}
               </label>
               <Field
@@ -239,7 +243,11 @@ const Settings = () => {
               />
             </div>
             <div className="w-full md:w-2/5">
-              <label className="mb-3 block text-black dark:text-white">
+              <label
+                className={`mb-3 block text-black dark:text-white ${
+                  i18n.language == 'ar' && 'text-end'
+                }`}
+              >
                 {t('To')}
               </label>
               <Field
@@ -256,7 +264,11 @@ const Settings = () => {
             </div>
 
             <div className="w-full md:w-2/5">
-              <label className="mb-3 block text-black dark:text-white">
+              <label
+                className={`mb-3 block text-black dark:text-white ${
+                  i18n.language == 'ar' && 'text-end'
+                }`}
+              >
                 {t('Price')}
               </label>
               <Field
@@ -343,7 +355,11 @@ const Settings = () => {
           </svg>
         </div>
         <div className="w-full md:w-2/5">
-          <label className="mb-3 block text-black dark:text-white">
+          <label
+            className={`mb-3 block text-black dark:text-white ${
+              i18n.language == 'ar' && 'text-end'
+            }`}
+          >
             {t('App Price')}
           </label>
           <Field
