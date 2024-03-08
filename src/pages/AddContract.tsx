@@ -671,11 +671,7 @@ function AddContract() {
                 key={index}
               >
                 <div className="w-full md:w-2/5 ">
-                  <label
-                    className={`mb-3 block text-black dark:text-white ${
-                      i18n.language == 'ar' && 'text-end'
-                    }`}
-                  >
+                  <label className={`mb-3 block text-black dark:text-white `}>
                     {t('Question')} {index + 1}
                   </label>
                   <Field

@@ -86,34 +86,35 @@ function ApprovedUsers() {
   }, [filterValue]);
   return (
     <div className="w-full overflow-x-auto">
-      <h1 className="text-2xl my-5">{t('Approved Users')}</h1>
-      <div
-        className={`flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-3/5 lg:justify-between lg:items-center lg:mb-25 ${
-          i18n.language == 'ar' && 'lg:flex-row-reverse'
-        }`}
-      >
-        <label className="mb-3 block text-black dark:text-white">
-          {t('Filter by')}
-        </label>
-        <select
-          name="type"
-          className="w-full lg:w-2/5  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-          onChange={(e) => {
-            console.log('changed', e.target.value);
-            setfilterValue(e.target.value!);
-          }}
+      <div style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}>
+        <h1 className="text-2xl my-5">{t('Approved Users')}</h1>
+        <div
+          className={`flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-3/5 lg:justify-between lg:items-center lg:mb-25 `}
         >
-          <option value={''}>{t('Select')}</option>
-          <option value={'User'}>{t('User')}</option>
-          <option value={'Company'}>{t('Company')}</option>
-        </select>
-        <button
-          className="inline-flex items-center justify-center disabled:cursor-default rounded-md bg-success py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 disabled:bg-body"
-          onClick={filterUsers}
-        >
-          {t('Filter')}
-        </button>
+          <label className="mb-3 block text-black dark:text-white">
+            {t('Filter by')}
+          </label>
+          <select
+            name="type"
+            className="w-full lg:w-2/5  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+            onChange={(e) => {
+              console.log('changed', e.target.value);
+              setfilterValue(e.target.value!);
+            }}
+          >
+            <option value={''}>{t('Select')}</option>
+            <option value={'User'}>{t('User')}</option>
+            <option value={'Company'}>{t('Company')}</option>
+          </select>
+          <button
+            className="inline-flex items-center justify-center disabled:cursor-default rounded-md bg-success py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 disabled:bg-body"
+            onClick={filterUsers}
+          >
+            {t('Filter')}
+          </button>
+        </div>
       </div>
+
       {showAlert && (
         <div className="w-1/5 md:w-4/5 right-0 absolute flex bg-boxdark-2  border-l-6 border-[#F87171] z-50   px-7 py-8 shadow-md  md:p-9">
           <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg ">
