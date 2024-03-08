@@ -67,9 +67,9 @@ function UserDetails() {
   };
   console.log(user);
   const removeImage = useCallback(() => {}, []);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
-    <div>
+    <div style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}>
       <h1 className="text-4xl text-black dark:text-white">
         {t('User Details')}
       </h1>

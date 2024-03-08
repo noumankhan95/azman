@@ -81,12 +81,15 @@ const UserContracts = () => {
   useEffect(() => {
     getContracts();
   }, [reload]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <div>
-      <div className="flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-4/5 space-x-4  lg:justify-between lg:items-center lg:mb-25">
+      <div
+        className="flex flex-col space-y-4 lg:space-y-0 items-start justify-start lg:flex-row w-4/5 space-x-4  lg:justify-between lg:items-center lg:mb-25"
+        style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+      >
         <label className="mb-3 block text-black dark:text-white">
-          {t('Filter By')}
+          {t('Filter by')}
         </label>
         <select
           name="type"
@@ -114,22 +117,40 @@ const UserContracts = () => {
         </button>
       </div>
       <div className="max-w-full overflow-x-auto">
-        <table className="w-full table-auto">
+        <table
+          className="w-full table-auto"
+          style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+        >
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+              <th
+                className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11"
+                style={{ textAlign: i18n.language == 'ar' ? 'right' : 'left' }}
+              >
                 {t('Contractee Id')}
               </th>
-              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+              <th
+                className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11"
+                style={{ textAlign: i18n.language == 'ar' ? 'right' : 'left' }}
+              >
                 {t('Contractee Name')}
               </th>
-              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+              <th
+                className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11"
+                style={{ textAlign: i18n.language == 'ar' ? 'right' : 'left' }}
+              >
                 {t('Contractee Email')}
               </th>
-              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+              <th
+                className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11"
+                style={{ textAlign: i18n.language == 'ar' ? 'right' : 'left' }}
+              >
                 {t('Contractee Phone')}
               </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
+              <th
+                className="py-4 px-4 font-medium text-black dark:text-white"
+                style={{ textAlign: i18n.language == 'ar' ? 'right' : 'left' }}
+              >
                 {t('Actions')}
               </th>
             </tr>

@@ -32,7 +32,7 @@ function AdminUsers() {
   const endIndex = startIndex + ItemsperPage;
   const currentItems = users.slice(startIndex, endIndex);
   const { role } = useUserAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const getUsers = useCallback(async () => {
     try {
       setisloading((p) => true);
@@ -59,7 +59,10 @@ function AdminUsers() {
   }, [reload]);
   console.log(users, 'isers');
   return (
-    <div className="w-full ">
+    <div
+      className="w-full "
+      style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+    >
       <h1 className="text-2xl my-10">{t('Approved Users')}</h1>
       {showAlert && (
         <div className="w-1/5 md:w-4/5 right-0 absolute flex bg-boxdark-2  border-l-6 border-[#F87171] z-50   px-7 py-8 shadow-md  md:p-9">

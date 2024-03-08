@@ -18,7 +18,7 @@ const Contracts = () => {
   const [showAlert, setshowAlert] = useState(false);
   const [contracts, setcontracts] = useState<Contract[]>([]);
   const { role } = useUserAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const {
     setisEditing,
     addToDb,
@@ -53,7 +53,7 @@ const Contracts = () => {
     getContracts();
   }, [reload]);
   return (
-    <div>
+    <div style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}>
       {showAlert && (
         <div className="w-1/5 md:w-4/5 right-0 absolute flex bg-boxdark-2  border-l-6 border-[#F87171] z-50   px-7 py-8 shadow-md  md:p-9">
           <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg ">
@@ -108,7 +108,12 @@ const Contracts = () => {
           </div>
         </div>
       )}
-      <div className="flex flex-row justify-end my-5">
+      <div
+        className={`flex flex-row justify-end my-5 ${
+          i18n.language == 'ar' && 'flex-row-reverse'
+        } `}
+        style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+      >
         {(role?.includes('Contract All') ||
           role?.includes('Contract Create')) && (
           <button
@@ -128,11 +133,17 @@ const Contracts = () => {
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+              <th
+                className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11"
+                style={{ textAlign: i18n.language == 'ar' ? 'right' : 'left' }}
+              >
                 {t('Contract Title')}
               </th>
 
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
+              <th
+                className="py-4 px-4 font-medium text-black dark:text-white"
+                style={{ textAlign: i18n.language == 'ar' ? 'right' : 'left' }}
+              >
                 {t('Actions')}
               </th>
             </tr>

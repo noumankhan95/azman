@@ -377,22 +377,31 @@ function AddContract() {
   return (
     <FormikProvider value={formikObj}>
       <div className="flex flex-col gap-5.5 p-6.5">
-        <h1>{t('Contract Information')}</h1>
+        <h1 style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}>
+          {t('Contract Information')}
+        </h1>
         <form
           onSubmit={formikObj.handleSubmit}
           className="flex flex-col gap-5.5 p-6.5"
         >
-          <div className="flex space-x-4">
-            <div className="w-full md:w-2/5">
-              <label
-                className={`mb-3 block text-black dark:text-white ${
-                  i18n.language == 'ar' && 'text-end'
-                }`}
-              >
+          <div
+            className={`flex space-x-4 ${
+              i18n.language == 'ar' ? 'gap-4' : 'gap-0'
+            }`}
+            style={{
+              direction: i18n.language == 'ar' ? 'rtl' : 'ltr',
+            }}
+          >
+            <div
+              className="w-full md:w-2/5"
+              style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+            >
+              <label className={`mb-3 block text-black dark:text-white`}>
                 {t('Contract Name')}
               </label>
               <Field
                 type="text"
+                style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
                 name="name"
                 placeholder="Name"
                 className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -403,16 +412,16 @@ function AddContract() {
                 className="text-danger"
               />
             </div>
-            <div className="w-full md:w-2/5">
-              <label
-                className={`mb-3 block text-black dark:text-white ${
-                  i18n.language == 'ar' && 'text-end'
-                }`}
-              >
+            <div
+              className="w-full md:w-2/5"
+              style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+            >
+              <label className={`mb-3 block text-black dark:text-white`}>
                 {t('Contract Type')}
               </label>
               <Field
                 as="select"
+                style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
                 name="type"
                 className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
               >
@@ -441,6 +450,8 @@ function AddContract() {
                     </label>
                     <Field
                       type="text"
+              style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+
                       name={`rentaldetails.${index}.from`}
                       placeholder="From"
                       className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -457,6 +468,8 @@ function AddContract() {
                     </label>
                     <Field
                       type="text"
+              style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+
                       name={`rentaldetails.${index}.to`}
                       placeholder="To"
                       className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -496,6 +509,8 @@ function AddContract() {
                     </label>
                     <Field
                       type="text"
+              style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+
                       name={`installmentdetails.${index}.from`}
                       placeholder="From"
                       className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -512,6 +527,8 @@ function AddContract() {
                     </label>
                     <Field
                       type="text"
+              style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+
                       name={`installmentdetails.${index}.to`}
                       placeholder="To"
                       className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -641,8 +658,13 @@ function AddContract() {
               </svg>
             </div>
           )} */}
-          <h1>{t('Questions')}</h1>
-          <div className="flex flex-col">
+          <h1 style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}>
+            {t('Questions')}
+          </h1>
+          <div
+            className="flex flex-col"
+            style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+          >
             {formikObj.values.questions?.map((d, index) => (
               <div
                 className="w-full flex flex-col lg:flex-row lg:space-x-5 my-3 "
@@ -658,6 +680,7 @@ function AddContract() {
                   </label>
                   <Field
                     type="text"
+                    style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
                     name={`questions.${index}.question`}
                     placeholder="question"
                     className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -1090,24 +1113,27 @@ function AddContract() {
                   />
                 </section>
               </div>
-
-              <button onClick={handleGetText} className="underline my-10">
-                {t('Download')}
-              </button>
+              <div style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}>
+                <button onClick={handleGetText} className="underline my-10">
+                  {t('Download')}
+                </button>
+              </div>
             </div>
           </>
-          <button
-            className="w-52 rounded bg-primary p-3 font-medium text-gray"
-            type="submit"
-          >
-            {isloading ? (
-              <LoaderIcon style={{ height: 30, width: 30, margin: 'auto' }} />
-            ) : isEditing.value ? (
-              t('Update')
-            ) : (
-              t('Save')
-            )}
-          </button>
+          <div style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}>
+            <button
+              className="w-52 rounded bg-primary p-3 font-medium text-gray"
+              type="submit"
+            >
+              {isloading ? (
+                <LoaderIcon style={{ height: 30, width: 30, margin: 'auto' }} />
+              ) : isEditing.value ? (
+                t('Update')
+              ) : (
+                t('Save')
+              )}
+            </button>
+          </div>
         </form>
       </div>
     </FormikProvider>

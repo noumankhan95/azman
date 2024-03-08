@@ -34,16 +34,25 @@ function UserContractDetails() {
         margin: { top: 20, right: 10, bottom: 20, left: 10 }, // Adjust individual margins
       });
   };
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <div>
-      <h1 className="text-4xl text-black dark:text-white">
+      <h1
+        className="text-4xl text-black dark:text-white"
+        style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+      >
         {t('User Contract Details')}
       </h1>
-      <button onClick={handleGetText} className="underline my-10 text-meta-5">
-        {t('Download Contract')}
-      </button>
-      <div className="flex flex-col gap-5.5 p-6.5">
+      <div style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}>
+        <button onClick={handleGetText} className="underline my-10 text-meta-5">
+          {t('Download Contract')}
+        </button>
+      </div>
+
+      <div
+        className="flex flex-col gap-5.5 p-6.5"
+        style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+      >
         <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 justify-start">
           <div className="w-full md:w-2/5">
             <h1 className="mb-3 block text-black dark:text-bodydark">

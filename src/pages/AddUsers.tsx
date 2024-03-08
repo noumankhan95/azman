@@ -66,7 +66,12 @@ function AddUsers() {
 
   return (
     <FormikProvider value={formikObj}>
-      <h1 className="text-2xl my-5">{t('User Information')}</h1>
+      <h1
+        className="text-2xl my-5"
+        style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+      >
+        {t('User Information')}
+      </h1>
 
       <form onSubmit={formikObj.handleSubmit}>
         {/* <div className="flex flex-col px-6.5 ">
@@ -78,6 +83,7 @@ function AddUsers() {
               </label>
               <Field
                 type="text"
+                        style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
                 name="Name"
                 placeholder="Name"
                 className="w-full bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -94,6 +100,7 @@ function AddUsers() {
               </label>
               <Field
                 type="text"
+                        style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
                 name="ArabicName"
                 placeholder="ArabicName"
                 className="w-full rounded-lg bg-white border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -107,7 +114,10 @@ function AddUsers() {
           </div>
         </div> */}
 
-        <div className="flex flex-col gap-5.5 p-6.5">
+        <div
+          className="flex flex-col gap-5.5 p-6.5"
+          style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+        >
           {/* <div className="flex space-x-4">
             <div className="w-full md:w-2/5">
               <label className={`mb-3 block text-black dark:text-white ${i18n.language=="ar" && "text-end"}`}>
@@ -126,17 +136,20 @@ function AddUsers() {
               />
             </div>
           </div> */}
-          <div className="flex flex-col md:flex-row md:space-x-4">
+          <div
+            className="flex flex-col md:flex-row md:space-x-4"
+            style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+          >
             <div className="w-full md:w-2/5">
               <label
-                className={`mb-3 block text-black dark:text-white ${
-                  i18n.language == 'ar' && 'text-end'
-                }`}
+                className={`mb-3 block text-black dark:text-white `}
+                style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
               >
                 {t('User Email')}
               </label>
               <Field
                 type="text"
+                style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
                 name="email"
                 placeholder="User Email"
                 className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -149,18 +162,21 @@ function AddUsers() {
             </div>
           </div>
 
-          <div className="flex space-x-4">
+          <div
+            className="flex space-x-4"
+            style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+          >
             <div className="w-full md:w-2/5">
               <label
-                className={`mb-3 block text-black dark:text-white ${
-                  i18n.language == 'ar' && 'text-end'
-                }`}
+                className={`mb-3 block text-black dark:text-white `}
+                style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
               >
                 {t('Password')}
               </label>
               <Field
                 type="password"
                 name="password"
+                style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
                 placeholder="Password"
                 className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
               />
@@ -171,11 +187,13 @@ function AddUsers() {
               />
             </div>
           </div>
-          <div className="flex flex-col w-2/5">
+          <div
+            className="flex flex-col w-2/5"
+            style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+          >
             <label
-              className={`mb-3 block text-black dark:text-white ${
-                i18n.language == 'ar' && 'text-end'
-              }`}
+              className={`mb-3 block text-black dark:text-white`}
+              style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
             >
               {t('User Roles')}
             </label>
@@ -219,6 +237,7 @@ function AddUsers() {
                 name="roles"
                 placeholder="roles"
                 className="absolute top-0 p-6 left-0 z-20 h-full w-full bg-transparent opacity-0"
+                style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
                 onChange={(e: any) => {
                   if (!formikObj.values.roles.includes(e.target.value))
                     formikObj.setFieldValue('roles', [
@@ -287,12 +306,18 @@ function AddUsers() {
             </div>
           </div>
         </div>
-        <button
-          className="w-52 rounded bg-primary p-3 font-medium text-gray"
-          type="submit"
-        >
-          {loading ? <LoaderIcon className="h-8 w-8 mx-auto" /> : t('Add User')}
-        </button>
+        <div style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}>
+          <button
+            className="w-52 rounded bg-primary p-3 font-medium text-gray"
+            type="submit"
+          >
+            {loading ? (
+              <LoaderIcon className="h-8 w-8 mx-auto" />
+            ) : (
+              t('Add User')
+            )}
+          </button>
+        </div>
       </form>
     </FormikProvider>
   );

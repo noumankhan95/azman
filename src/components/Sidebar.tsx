@@ -59,7 +59,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       document.querySelector('body')?.classList.remove('sidebar-expanded');
     }
   }, [sidebarExpanded]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <aside
       ref={sidebar}
@@ -102,11 +102,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
           {/* <!-- Menu Group --> */}
           <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+            <h3
+              className="mb-4 ml-4 text-sm font-semibold text-bodydark2"
+              style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+            >
               {t('MENU')}
             </h3>
 
-            <ul className="mb-6 flex flex-col gap-1.5">
+            <ul
+              className="mb-6 flex flex-col gap-1.5"
+              style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
+            >
               {/* <!-- Menu Item Dashboard --> */}
               {/* <SidebarLinkGroup
                 activeCondition={
@@ -877,6 +883,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         }`}
                         onClick={() => {
                           signOut(auth);
+                        }}
+                        style={{
+                          direction: i18n.language == 'ar' ? 'rtl' : 'ltr',
                         }}
                       >
                         <svg

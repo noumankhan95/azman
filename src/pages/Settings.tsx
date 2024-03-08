@@ -221,13 +221,10 @@ const Settings = () => {
           <div
             className="w-full flex flex-col lg:flex-row lg:space-x-5 my-3 "
             key={index}
+            style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
           >
             <div className="w-full md:w-2/5 ">
-              <label
-                className={`mb-3 block text-black dark:text-white ${
-                  i18n.language == 'ar' && 'text-end'
-                }`}
-              >
+              <label className={`mb-3 block text-black dark:text-white `}>
                 {t('From')}
               </label>
               <Field
@@ -243,11 +240,7 @@ const Settings = () => {
               />
             </div>
             <div className="w-full md:w-2/5">
-              <label
-                className={`mb-3 block text-black dark:text-white ${
-                  i18n.language == 'ar' && 'text-end'
-                }`}
-              >
+              <label className={`mb-3 block text-black dark:text-white `}>
                 {t('To')}
               </label>
               <Field
@@ -264,11 +257,7 @@ const Settings = () => {
             </div>
 
             <div className="w-full md:w-2/5">
-              <label
-                className={`mb-3 block text-black dark:text-white ${
-                  i18n.language == 'ar' && 'text-end'
-                }`}
-              >
+              <label className={`mb-3 block text-black dark:text-white `}>
                 {t('Price')}
               </label>
               <Field
@@ -316,7 +305,13 @@ const Settings = () => {
             </div>
           </div>
         ))}
-        <div className="w-full relative -ml-5 my-8">
+        <div
+          className="w-full relative -ml-5 my-8"
+          style={{
+            direction: i18n.language == 'ar' ? 'rtl' : 'ltr',
+            marginTop: i18n.language == 'ar' ? '8px' : '0px',
+          }}
+        >
           <svg
             viewBox="0 0 1024 1024"
             height={30}
@@ -354,25 +349,29 @@ const Settings = () => {
             </g>
           </svg>
         </div>
-        <div className="w-full md:w-2/5">
-          <label
-            className={`mb-3 block text-black dark:text-white ${
-              i18n.language == 'ar' && 'text-end'
-            }`}
-          >
-            {t('App Price')}
-          </label>
-          <Field
-            type="number"
-            name={`AppPrice`}
-            placeholder="App Price"
-            className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-          />
-          <ErrorMessage
-            name={`AppPrice`}
-            component="div"
-            className="text-danger"
-          />
+        <div
+          className="w-full"
+          style={{
+            direction: i18n.language == 'ar' ? 'rtl' : 'ltr',
+            marginTop: i18n.language == 'ar' ? '4rem' : '0rem',
+          }}
+        >
+          <div className="md:w-2/5 ">
+            <label className={`mb-3 block text-black dark:text-white `}>
+              {t('App Price')}
+            </label>
+            <Field
+              type="number"
+              name={`AppPrice`}
+              placeholder="App Price"
+              className="w-full  bg-white rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+            />
+            <ErrorMessage
+              name={`AppPrice`}
+              component="div"
+              className="text-danger"
+            />
+          </div>
         </div>
         <div className="overflow-hidden rounded-sm border border-strokeshadow-default dark:border-strokedark my-5 dark:bg-boxdark">
           <div className="px-4 py-5 pb-6 text-center lg:pb-8 xl:pb-11.5">
@@ -456,20 +455,21 @@ const Settings = () => {
           </div>
           <>{MemoizedImages}</>
         </div>
-
-        <button
-          type="submit"
-          disabled={!!isloading}
-          className="inline-flex my-20 items-center justify-center rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-        >
-          {isloading ? (
-            <LoaderIcon style={{ height: 30, width: 30, margin: 'auto' }} />
-          ) : shouldUpdate ? (
-            t('Update')
-          ) : (
-            t('Save')
-          )}
-        </button>
+        <div style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}>
+          <button
+            type="submit"
+            disabled={!!isloading}
+            className="inline-flex my-20 items-center justify-center rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+          >
+            {isloading ? (
+              <LoaderIcon style={{ height: 30, width: 30, margin: 'auto' }} />
+            ) : shouldUpdate ? (
+              t('Update')
+            ) : (
+              t('Save')
+            )}
+          </button>
+        </div>
       </form>
     </FormikProvider>
   );
