@@ -62,6 +62,7 @@ function NewUsers() {
       setisloading((p) => false);
     }
   }, [filterValue]);
+  
   const getUsers = useCallback(async () => {
     try {
       setisloading((p) => true);
@@ -85,8 +86,8 @@ function NewUsers() {
       setisloading((p) => false);
       setreload(false);
     }
+
   }, []);
-  console.log(isdeleting, 'is deleting');
   useEffect(() => {
     getUsers();
   }, [reload]);

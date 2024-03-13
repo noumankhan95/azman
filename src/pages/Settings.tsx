@@ -219,7 +219,7 @@ const Settings = () => {
       <form onSubmit={formikobj.handleSubmit}>
         {formikobj.values.details.map((d, index) => (
           <div
-            className="w-full flex flex-col lg:flex-row lg:space-x-5 my-3 "
+            className="w-full flex flex-col lg:flex-row lg:space-x-5 my-3 gap-10"
             key={index}
             style={{ direction: i18n.language == 'ar' ? 'rtl' : 'ltr' }}
           >
